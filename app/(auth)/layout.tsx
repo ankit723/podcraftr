@@ -1,16 +1,13 @@
-import Image from "next/image";
-
+import LeftSideBar from "@/components/shared/leftSideBar";
+import RightSideBar from "@/components/shared/rightSideBar";
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <main className="relative h-screen w-full">
-      <div className="absolute size-full">
-        <Image src="/images/bg-img.png" alt="background" fill className="size-full"/>
-      </div>
-      {children}
+    <main>
+        {children}
     </main>
   );
 }
