@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "pdcraftr",
+  "private_key_id": "76a53522df14b2234550efb104819ee6c8e7d6cb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+Y+OpkdCG74FZ\nBN/uh4vaijQIz8aeoVKYmskxPBM6FHODvviu0cFzovcy73kZB/yWgE4vxGM0OCg5\nwSsh1iyrwMdoNIZ7gTEhjT2hyAUIvIn81usBdC04Sas4y14zEhGwLjg0+vHyOMep\nnXL3O8yZP/Gf9rB0Uxdfdl4owBXdrwTxaRPebKh5tUR6d9vQNRGnGLKD5CYABCsG\nko/9ieU1xtgoTPwv7AviLriyYE5Zr4HcfLFximG5GQ6N5WOIzTTSB7cd4M/sfyAa\ncCQ4LUdB22wm0p4xy+b73GKOsEBMz0M+7/yERwSjVXAZgsFLyNhdBrvQkNrj7Kop\ntfaKvDjrAgMBAAECggEAVHxLGIJGQLqjcXdCT70CiJXvhUF+aAI6ftGhGiIIfit5\nHytte1ZFPCVDAO1XlY3/vmFtULEbPJ726roXg8pgxE6lrk4wpzmrLbJZeSMjaL8R\nlItieaCuOF4ohuloAc2w37eC5a++Ebi0kUX3MFLu9cp0VIHJx7TfmFMUcYzbpyUw\nTiW6Ikng8QEV8Jzf/AczIV/Lr9TfsnonJ1j0Vnzz2Mw4w2m0sk2kAwRfNNz2fN8I\n2EeVB6sjZlKXK4hiBJtTOpBnq+isI0Y/cPDYAyjgB3O2q56dPH5iJQj0m3s8OjrR\nZT7UdWoHfIjpH3Jm60j/R0ZfAITy+RHbl6AirQgsMQKBgQD1MRnxuzQUvyuOr1PL\nzO/Fdfv8X32ZpHClL14BxOg51aKrwd52IBmk4kFPUD43V5zz2Wst4xhBlDmpNRFM\nY5pgIG/RNGZ3Kk8zD5hfbJCPV6n5Ao9PJ63QgNKSkUpCb5a3J4f2bTu9dYphI4ka\na/61IzGjkkASNngaxWlXCIQbjwKBgQDGyF9B5ccwAQMXS3ocyU2mZZXu0TXNl2aU\nWhUz/50o1XIHQYbV9HpNXEgqXN4fBR9WuDBdV3r0Pa3AzlAtWscNVMxuNc/WjK5Y\nDhjq+z6bbSl0smFD/b6JqQOQ0V5jgTk4M4CoBbLNks83YTI7e+o6LlJRxR7XhMwS\nGUj+ZDZO5QKBgHm2/y8NhCQMZj31cP6JZDk8gXNdn8bmZ3jIk70DF1imYZMrsRgo\nhTJhkpQhvFDSsDoootjrk73yK9GAY27tPtQbJgbPIVJkcV5ijnxIM1bE6L6Q870S\ncGlBmcZiU1+5bzLKb+b3gKFjOOdRsZypIY6fwuN1FVM1MNfxSYKH2rSnAoGBAI4u\na9Qaomp3jtpuph1I7z2Bk8iJ48316O1bsabLwoGeij0eZW9Lut7yjrueSVIuu8ev\nXwiktdFU/J7X8wk90Pp8GO0LmGmBnoJlMvWAV7ucTPanUGLtcAfO2DoRR04s89x7\nGh8UVFwuEgEuiFt7uoF6+G58bB8DYWPgqhErZJzxAoGAPtdYmdAxxYzg8c6tpPSz\ns66rU6wpisZsVHoQSYXb5u7rU0Or7d9LhEuIEOZIsbEvfWAAa5V2kpW6QNrdKBVF\nlqEcu7ZrFVJhewLWZ9t78UgN0fvx6LExaNASv/4lQeHzjn8DDKhwfwvZIqmVSc8v\nTZZoBgqFaDZgM/uMyWZgFo8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ankit-podcraftr@pdcraftr.iam.gserviceaccount.com",
+  "client_id": "116734505295444603624",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ankit-podcraftr%40pdcraftr.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
