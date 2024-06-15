@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
-// import { updateUser } from "@/lib/actions/user.action";
+import { updateUser } from "@/lib/actions/user.action";
 import { UploadImage } from "@/lib/actions/profileAccount.action";
 
 interface Props {
@@ -23,6 +23,8 @@ interface Props {
         id: string;
         objectId: string;
         name: string;
+        username: string;
+        email:string;
         bio: string;
         image: string;
     };
@@ -39,6 +41,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         defaultValues: {
             profile_photo: user?.image ? user.image : "",
             name: user?.name ? user.name : "",
+            username: user?.username ? user.username : "",
+            email: user?.email?user?.email:"",
             bio: user?.bio ? user.bio : "",
         },
     });
@@ -50,24 +54,29 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
         if (file) {
             formData.append("profile_photo", file);
-        }
-
-        try {
-            const imgRes = await UploadImage(formData);
-
-            if (imgRes && imgRes.fileUrl) {
-                console.log(imgRes.fileUrl)
-                values.profile_photo = imgRes.fileUrl;
+            try {
+                const imgRes = await UploadImage(formData);
+    
+                if (imgRes && imgRes.fileUrl) {
+                    console.log(imgRes.fileUrl)
+                    values.profile_photo = imgRes.fileUrl;
+                }
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                return;
             }
-        } catch (error) {
-            console.error("Error uploading image:", error);
-            // Handle error (e.g., show error message)
-            return;
         }
-
         console.log(values)
-        // Update user profile logic
-        // Uncomment and add your update logic here
+        
+        await updateUser({
+            name: values.name,
+            path: pathname,
+            username: values.username,
+            id: user.id,
+            email:values.email,
+            bio: values.bio,
+            imageUrl: values.profile_photo,
+        });
 
         if (pathname === "/profile/edit") {
             router.back();
@@ -138,6 +147,16 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 <FormField control={form.control} name="name" render={({ field }) => (
                     <FormItem className="flex w-full flex-col gap-3">
                         <FormLabel className="text-base-semibold text-light-2">Name</FormLabel>
+                        <FormControl>
+                            <Input type="text" className="account-form_input no-focus" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
+                <FormField control={form.control} name="username" render={({ field }) => (
+                    <FormItem className="flex w-full flex-col gap-3">
+                        <FormLabel className="text-base-semibold text-light-2">Username</FormLabel>
                         <FormControl>
                             <Input type="text" className="account-form_input no-focus" {...field} />
                         </FormControl>
