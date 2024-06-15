@@ -1,7 +1,9 @@
 'use server';
 import { Storage } from '@google-cloud/storage';
 
-const storage = new Storage({ keyFilename: "pdcraftr-76a53522df14.json" });
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CLOUD_CREDENTIALS_JSON||"");
+
+const storage = new Storage({ credentials});
 const bucketName = 'podcraftr-profile-image-bucket';
 
 export const UploadImage = async (form: FormData) => {
