@@ -1,45 +1,28 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 import { useEffect, useState } from "react"
-
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessage,} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue,} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 import GeneratePodcast from "@/components/cards/generatePodcast"
 // import GenerateThumbnail from "@/components/GenerateThumbnail"
 import { Loader } from "lucide-react"
-
 import { useRouter } from "next/navigation"
 
-const voiceCategories = ['alloy', 'shimmer', 'nova', 'echo', 'fable', 'onyx'];
+const voiceCategories = ['en-US-Journey-D', 'en-US-Journey-F', 'en-US-Journey-O', 'en-US-News-L', 'en-US-News-N', 'en-US-Polyglot-1', 'en-US-Studio-O', 'en-US-Studio-Q', 'en-US-Wavenet-D', 'hi-IN-Neural2-A', 'hi-IN-Neural2-D', 'hi-IN-Wavenet-A', 'hi-IN-Wavenet-D', 'hi-IN-Neural2-B', 'hi-IN-Neural2-C', 'hi-IN-Wavenet-B', 'hi-IN-Wavenet-C'];
 
 const CreatePodcast = () => {
   const router = useRouter()
   const [imageUrl, setImageUrl] = useState('');
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioDuration, setAudioDuration] = useState(0);
-  const [voiceType, setVoiceType] = useState<string | null>(null);
+  const [voiceType, setVoiceType] = useState<string>('');
   const [voicePrompt, setVoicePrompt] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -123,7 +106,7 @@ const CreatePodcast = () => {
                 <FormItem className="flex flex-col gap-2.5">
                   <FormLabel className="text-16 font-bold text-white-1">Title</FormLabel>
                   <FormControl>
-                    <Input className="input-class focus-visible:ring-offset-orange-1" placeholder="JSM Pro Podcast" {...field} />
+                    <Input className="input-class focus-visible:ring-offset-orange-1" placeholder="Podcast..." {...field} required/>
                   </FormControl>
                   <FormMessage className="text-white-1" />
                 </FormItem>
@@ -138,12 +121,17 @@ const CreatePodcast = () => {
                 </SelectTrigger>
                 <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-orange-1">
                   {voiceCategories.map((category) => (
-                    <SelectItem key={category} value={category} className="capitalize focus:bg-orange-1">{category}</SelectItem>
+                    <div key={category}>
+                    {category.includes('Journey')?
+                      <SelectItem key={category} value={category} className="capitalize flex justify-between w-full items-center  focus:bg-orange-1">
+                        {category} &nbsp; <span className=" text-tiny-medium text-white-2">Only 1450 chars with Standard Plan</span>
+                      </SelectItem>:<SelectItem key={category} value={category} className="capitalize focus:bg-orange-1">{category}</SelectItem>}
+                    </div>
                   ))}
                 </SelectContent>
                 {voiceType && (
                   <audio 
-                    src={`/${voiceType}.mp3`}
+                    src={`/${voiceType}.wav`}
                     autoPlay
                     className="hidden"
                   />
@@ -155,7 +143,7 @@ const CreatePodcast = () => {
                 <FormItem className="flex flex-col gap-2.5">
                   <FormLabel className="text-16 font-bold text-white-1">Description</FormLabel>
                   <FormControl>
-                    <Textarea className="input-class focus-visible:ring-offset-orange-1" placeholder="Write a short podcast description" {...field} />
+                    <Textarea className="input-class focus-visible:ring-offset-orange-1" placeholder="Write a short podcast description" {...field} required/>
                   </FormControl>
                   <FormMessage className="text-white-1" />
                 </FormItem>
@@ -166,12 +154,12 @@ const CreatePodcast = () => {
           <div className="flex flex-col pt-10">
               <GeneratePodcast 
                 setAudio={setAudioUrl}
-                voiceType="en-US-Journey-F"
+                voiceType={voiceType.trim()}
                 audio={audioUrl}
                 voicePrompt={voicePrompt}
                 setVoicePrompt={setVoicePrompt}
                 setAudioDuration={setAudioDuration}
-                language="en-US"
+                language={voiceType.includes('hi-IN')?"hi-IN":"en-US"}
               />
 
               {/* <GenerateThumbnail 

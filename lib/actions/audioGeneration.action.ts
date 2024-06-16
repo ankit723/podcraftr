@@ -54,22 +54,6 @@ export async function SynthesizeSpeech({ text, voiceType, language, save }: {
             }
         });
 
-        if (!save) {
-            // Set object lifecycle policy to delete after 5 hours
-            await file.setMetadata({
-                lifecycle: {
-                    rule: {
-                        action: {
-                            type: 'Delete'
-                        },
-                        condition: {
-                            age: 18000 // Age in seconds (5 hours)
-                        }
-                    }
-                }
-            });
-        }
-
         // Make the file publicly accessible
         await file.makePublic();
 

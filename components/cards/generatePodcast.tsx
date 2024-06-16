@@ -7,63 +7,71 @@ import { Loader } from 'lucide-react'
 import { SynthesizeSpeech } from '@/lib/actions/audioGeneration.action'
 
 const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language }: GeneratePodcastProps) => {
-    const [isGenerating, setIsGenerating] = useState(false);
-  
-    const generatePodcast = async () => {
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const generatePodcast = async () => {
+    setAudio(null)
+    if (voiceType !== '') {
       setIsGenerating(true);
-  
+
       if (!voicePrompt) {
         alert("Please provide a voice prompt to generate a podcast");
         setIsGenerating(false);
         return;
       }
-  
+
       try {
-        const { publicUrl, outputFilename } = await SynthesizeSpeech({
-          text: voicePrompt,
-          voiceType,
-          language,
-          save:false
-        });
+        const { publicUrl, outputFilename } = await SynthesizeSpeech({ text: voicePrompt, voiceType, language, save: false });
         setAudio(publicUrl);
       } catch (error) {
         console.error('Error generating podcast', error);
       } finally {
         setIsGenerating(false);
       }
-    };
+    } else {
+      alert('Select the voice')
+    }
+  };
 
-    const savePodcast = async () => {
-        setIsGenerating(true);
-    
-        if (!voicePrompt) {
-          alert("Please provide a voice prompt to generate a podcast");
-          setIsGenerating(false);
-          return;
-        }
-    
-        try {
-          const { publicUrl, outputFilename } = await SynthesizeSpeech({
-            text: voicePrompt,
-            voiceType,
-            language,
-            save:true
-          });
-          setAudio(publicUrl);
-        } catch (error) {
-          console.error('Error generating podcast', error);
-        } finally {
-          setIsGenerating(false);
-        }
-      };
-    
-  
-    return { isGenerating, generatePodcast, savePodcast };
+  const savePodcast = async () => {
+    setIsGenerating(true);
+
+    if (!voicePrompt) {
+      alert("Please provide a voice prompt to generate a podcast");
+      setIsGenerating(false);
+      return;
+    }
+
+    try {
+      const { publicUrl, outputFilename } = await SynthesizeSpeech({
+        text: voicePrompt,
+        voiceType,
+        language,
+        save: true
+      });
+      setAudio(publicUrl);
+    } catch (error) {
+      console.error('Error generating podcast', error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  return { isGenerating, generatePodcast, savePodcast };
 };
 
 const GeneratePodcast = (props: GeneratePodcastProps) => {
   const { isGenerating, generatePodcast, savePodcast } = useGeneratePodcast(props);
+  const [characterCount, setCharacterCount] = useState(props.voicePrompt ? props.voicePrompt.length : 0);
+  const isJourneyVoice = props.voiceType.includes('Journey');
 
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value;
+    if (!isJourneyVoice || newText.length <= 1400) {
+      props.setVoicePrompt(newText);
+      setCharacterCount(newText.length);
+    }
+  }
 
   const handleGeneratePodcast = async () => {
     await generatePodcast();
@@ -73,19 +81,24 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
     await savePodcast();
   }
 
-
-
   return (
     <div>
       <div className="flex flex-col gap-2.5">
-        <Label className="text-16 font-bold text-white-1">AI Prompt to generate Podcast</Label>
+        <Label className="text-16 font-bold text-white-1">
+          AI Prompt to generate Podcast &nbsp;
+          <span className='text-tiny-medium text-white-2'>Use correct spellings, shortforms, and punctuations to get the best result!</span>
+        </Label>
         <Textarea
           className="input-class font-light focus-visible:ring-offset-orange-1"
           placeholder='Provide text to generate audio'
-          rows={5}
+          rows={(Math.floor((characterCount)*(1/133))*2)<10?10:Math.floor((characterCount)*(1/133))*2}
           value={props.voicePrompt}
-          onChange={(e) => props.setVoicePrompt(e.target.value)}
+          onChange={handleTextChange}
+          maxLength={isJourneyVoice ? 1450 : undefined}
         />
+        <div className="text-right text-small-regular text-white-3">
+          {characterCount} {isJourneyVoice&&"/ 1400 characters"}
+        </div>
       </div>
       <div className="mt-5 w-full max-w-[200px] flex">
         <Button
@@ -99,15 +112,16 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
             'Generate'
           )}
         </Button>
-        <Button type="button"className="text-16 bg-green-1 py-4 font-bold text-white-1 ml-3"onClick={handleSavePodcast}disabled={!props.audio}>Save</Button>
       </div>
       {props.audio && (
-        <audio // Ensure key changes to force re-render of audio element
+        <audio
           controls
           src={props.audio}
           autoPlay
           className="mt-5"
-          onLoadedMetadata={(e) => props.setAudioDuration(e.currentTarget.duration)}
+          onLoadedMetadata={(e) => {
+            props.setAudioDuration(e.currentTarget.duration)
+          }}
         />
       )}
     </div>
