@@ -1,0 +1,112 @@
+'use server'
+import { connectToDB } from "../mongoose"
+import User from "../models/user.model"
+import { revalidatePath } from "next/cache";
+import { currentUser } from "@clerk/nextjs/server";
+import Podcast from "../models/podcast.model";
+import { redirect } from "next/navigation";
+
+export async function createPodcast({podcastTitle, podcastDescription, podcastCategory, audioUrl, audioDuration, imageUrl, voiceType, voicePrompt, views}:any){
+    try{
+        connectToDB()
+        const cUser = await currentUser()
+        const user = await User.findOne({id:cUser?.id})
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 6; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        const newPodcast = new Podcast({
+            id: `pod_${user.id}_${result}`,
+            podcastTitle,
+            podcastDescription,
+            podcastCategory,
+            audioUrl,
+            audioDuration,
+            imageUrl,
+            voiceType,
+            voicePrompt,
+            views,
+            author:user._id,
+            authorId:cUser?.id
+        });
+
+        const createdPodcast = await newPodcast.save();
+
+        await User.findOneAndUpdate({id:cUser?.id}, {
+            $push: { podcasts: createdPodcast._id },
+        });
+
+        console.log("Created Podcast Object:", createdPodcast);
+
+        redirect("/discover")
+    }catch(error:any){
+        console.error("Error creating podcast:", error);
+        throw error;
+    }
+}
+
+export async function fetchPodcasts() {
+    try {
+        connectToDB()
+        const podcasts= await Podcast.find({})
+        .populate({
+            path:"author",
+            model:User
+        })
+        return podcasts
+    }catch(error:any){
+        console.error("Error fetching podcasts:", error);
+        throw error;
+    }
+}
+
+export async function fetchPodcastById(id:string) {
+    try {
+        connectToDB()
+        const podcast= await Podcast.findOne({id})
+        .populate({
+            path:"author",
+            model:User
+        })
+        return podcast
+    }catch(error:any){
+        console.error("Error fetching podcasts:", error);
+        throw error;
+    }
+}
+
+export async function fetchPodcastByCategory(podcastCategory:string) {
+    try {
+        connectToDB()
+        const podcasts= await Podcast.find({podcastCategory})
+        .populate({
+            path:"author",
+            model:User
+        })
+        return podcasts
+    }catch(error:any){
+        console.error("Error fetching podcasts:", error);
+        throw error;
+    }
+}
+
+
+
+
+export async function deletePodcastById(id:string) {
+    try {
+        connectToDB()
+        const podcast= await Podcast.findOneAndDelete({id})
+    }catch(error:any){
+        console.error("Error deleting podcast:", error);
+        throw error;
+    }
+}

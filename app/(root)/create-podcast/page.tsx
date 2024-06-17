@@ -11,18 +11,26 @@ import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue,} from "@/comp
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 import GeneratePodcast from "@/components/cards/generatePodcast"
-// import GenerateThumbnail from "@/components/GenerateThumbnail"
+import GenerateThumbnail from "@/components/cards/generateThumbnail"
 import { Loader } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { createPodcast } from "@/lib/actions/podcast.action"
+import { useUser } from "@clerk/nextjs"
 
 const voiceCategories = ['en-US-Journey-D', 'en-US-Journey-F', 'en-US-Journey-O', 'en-US-News-L', 'en-US-News-N', 'en-US-Polyglot-1', 'en-US-Studio-O', 'en-US-Studio-Q', 'en-US-Wavenet-D', 'hi-IN-Neural2-A', 'hi-IN-Neural2-D', 'hi-IN-Wavenet-A', 'hi-IN-Wavenet-D', 'hi-IN-Neural2-B', 'hi-IN-Neural2-C', 'hi-IN-Wavenet-B', 'hi-IN-Wavenet-C'];
 
+const podcastCategoryList=['Romance', 'Action', 'Drama', 'Horror', 'Funny']
+
 const CreatePodcast = () => {
+
+  const {user}=useUser()
   const router = useRouter()
+  if(!user)router.push('/sign-in')
   const [imageUrl, setImageUrl] = useState('');
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioDuration, setAudioDuration] = useState(0);
   const [voiceType, setVoiceType] = useState<string>('');
+  const [podcastCategory, setPodcastCategory] = useState<string>('');
   const [voicePrompt, setVoicePrompt] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,6 +38,7 @@ const CreatePodcast = () => {
     defaultValues: {
       podcastTitle: "",
       podcastDescription: "",
+      podcastCategory: "",
       audioUrl: '',
       imageUrl: '',
       voicePrompt: '',
@@ -54,33 +63,30 @@ const CreatePodcast = () => {
     reset({
       podcastTitle,
       podcastDescription,
+      podcastCategory,
       audioUrl,
       imageUrl,
       voicePrompt,
       voiceType,
       audioDuration,
     });
-  }, [audioUrl, imageUrl, voicePrompt, voiceType, audioDuration, podcastTitle, podcastDescription, reset]);
+  }, [audioUrl, imageUrl, voicePrompt, voiceType, podcastCategory, audioDuration, podcastTitle, podcastDescription, reset]);
 
   async function onSubmit(data: any) {
     try {
       setIsSubmitting(true);
-      
-      console.log(data, voiceType);
 
-      // const podcast = await createPodcast({
-      //   podcastTitle: data.podcastTitle,
-      //   podcastDescription: data.podcastDescription,
-      //   audioUrl,
-      //   imageUrl,
-      //   voiceType,
-      //   imagePrompt,
-      //   voicePrompt,
-      //   views: 0,
-      //   audioDuration,
-      //   audioStorageId: audioStorageId!,
-      //   imageStorageId: imageStorageId!,
-      // })
+      const podcast = await createPodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        podcastCategory:data.podcastCategory,
+        audioUrl: data.audioUrl,
+        audioDuration: data.audioDuration,
+        imageUrl: data.imageUrl,
+        voiceType: data.voiceType,
+        voicePrompt: data.voicePrompt,
+        views: 0,
+      })
 
       // alert({ title: 'Podcast created' });
       setIsSubmitting(false);
@@ -149,6 +155,22 @@ const CreatePodcast = () => {
                 </FormItem>
               )}
             />
+
+            <div className="flex flex-col gap-2.5">
+              <Label className="text-16 font-bold text-white-1">Select Podcast Category</Label>
+              <Select onValueChange={(value) => setPodcastCategory(value)}>
+                <SelectTrigger className={cn('text-16 w-full border-none bg-black-1 text-gray-1 focus-visible:ring-offset-orange-1')}>
+                  <SelectValue placeholder="Select Podcast Category" className="placeholder:text-gray-1 " />
+                </SelectTrigger>
+                <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-orange-1">
+                  {podcastCategoryList.map((category:any) => (
+                    <div key={category}>
+                      <SelectItem key={category} value={category} className="capitalize focus:bg-orange-1">{category}</SelectItem>
+                    </div>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="flex flex-col pt-10">
@@ -162,13 +184,10 @@ const CreatePodcast = () => {
                 language={voiceType.includes('hi-IN')?"hi-IN":"en-US"}
               />
 
-              {/* <GenerateThumbnail 
+              <GenerateThumbnail 
                setImage={setImageUrl}
-               setImageStorageId={setImageStorageId}
                image={imageUrl}
-               imagePrompt={imagePrompt}
-               setImagePrompt={setImagePrompt}
-              /> */}
+              />
 
               <div className="mt-10 w-full">
                 <Button type="submit" className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1">

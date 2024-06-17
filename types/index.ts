@@ -60,10 +60,7 @@ export interface GeneratePodcastProps {
 
 export interface GenerateThumbnailProps {
   setImage: Dispatch<SetStateAction<string>>;
-  setImageStorageId: Dispatch<SetStateAction<string | null>>;
   image: string;
-  imagePrompt: string;
-  setImagePrompt: Dispatch<SetStateAction<string>>;
 }
 
 export interface LatestPodcastCardProps {
@@ -84,8 +81,6 @@ export interface PodcastDetailPlayerProps {
   isOwner: boolean;
   imageUrl: string;
   podcastId: string;
-  imageStorageId: string;
-  audioStorageId: string;
   authorImageUrl: string;
   authorId: string;
 }

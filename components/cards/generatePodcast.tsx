@@ -97,12 +97,12 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           maxLength={isJourneyVoice ? 1450 : undefined}
         />
         <div className="text-right text-small-regular text-white-3">
-          {characterCount} {isJourneyVoice&&"/ 1400 characters"}
+          {characterCount} {isJourneyVoice&&"/ 1450 characters"}
         </div>
       </div>
       <div className="mt-5 w-full max-w-[200px] flex">
         <Button
-          type="submit"
+          type='button'
           className="text-16 bg-orange-1 py-4 font-bold text-white-1"
           onClick={handleGeneratePodcast}
         >

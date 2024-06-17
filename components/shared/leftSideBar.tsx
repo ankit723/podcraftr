@@ -5,6 +5,9 @@ import React from 'react'
 import { sidebarLinks } from '@/constants'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { SignedOut, SignedIn } from '@clerk/nextjs'
+import { SignOutButton } from '@clerk/nextjs'
+import { Button } from '../ui/button'
 
 const LeftSideBar = () => {
   const pathname=usePathname()
@@ -27,6 +30,18 @@ const LeftSideBar = () => {
           )
         })}
       </nav>
+      <SignedOut>
+        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+          <Button asChild className="text-16 w-full bg-orange-1 font-extrabold">
+            <Link href="/sign-in">Sign In</Link>
+          </Button>
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+        <Button className="text-16 w-full bg-orange-1 font-extrabold"><SignOutButton /></Button>
+        </div>
+      </SignedIn>
     </section>
   )
 }

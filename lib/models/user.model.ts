@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema({
   imageUrl: { type: String, required: true },
   name: { type: String, required: true },
   username: { type: String, required: true },
-  bio: { type: String, required: true }
+  bio: { type: String, required: true },
+  podcasts:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Knot'
+    }
+  ],
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

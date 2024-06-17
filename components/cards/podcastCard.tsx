@@ -1,4 +1,6 @@
+'use client'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const PodcastCard = ({imgUrl, title, description, podcastId}:{
@@ -7,8 +9,14 @@ const PodcastCard = ({imgUrl, title, description, podcastId}:{
     description:string,
     podcastId:number
 }) => {
+  const router=useRouter()
+
+  const handleViews=()=>{
+    //increase views
+    router.push(`/podcasts/${podcastId}`)
+  }
   return (
-    <div className='cursor-pointer '>
+    <div className='cursor-pointer' onClick={handleViews}>
         <figure className='flex flex-col gap-2'>
             <Image src={imgUrl} alt={title} width={174} height={174} className=' aspect-square h-fit w-full rounded-xl 2xl:size[200px]'/>
             <div className="flex flex-col">

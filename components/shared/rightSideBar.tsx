@@ -1,11 +1,15 @@
-import React from 'react'
+import React from 'react';
+import RightSideBarDetails from './rightSideBarDetails';
+import { getRightSideBarData } from './rightSideBarData';
+import { useUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
 
-const RightSideBar = () => {
+const RightSideBar = async () => {
+  const {rPodcasts } = await getRightSideBarData();
+
   return (
-    <section className='right_sidebar'>
-      <p className='text-white-1'>Right Sidebar</p>
-    </section>
-  )
-}
+    <RightSideBarDetails podcasts={rPodcasts} />
+  );
+};
 
-export default RightSideBar
+export default RightSideBar;
