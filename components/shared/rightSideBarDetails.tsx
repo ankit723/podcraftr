@@ -33,7 +33,7 @@ const RightSideBarDetails = ({ podcasts }:any) => {
 
         <div className="flex flex-col gap-6">
             {podcasts.map((pod:any)=>(
-                <div className="flex cursor-pointer justify-between" onClick={()=>router.push(`/profile/${pod._doc.author.id}`)}>
+                <div key={pod._doc.id} className="flex cursor-pointer justify-between" onClick={()=>router.push(`/profile/${pod._doc.author.id}`)}>
                     <figure className='flex items-center gap-2'>
                         <Image src={pod._doc.author.imageUrl} alt='podcaster-name' width={44} height={44} className='aspect-square rounded-lg'/>
                         <h2 className='text-14 font-semibold text-white-1'>{pod._doc.author.name} <br /> <span className=' text-white-3 text-tiny-medium'>{pod._doc.author.username}</span></h2>
