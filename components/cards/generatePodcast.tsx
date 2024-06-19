@@ -6,11 +6,12 @@ import { Button } from '../ui/button'
 import { Loader } from 'lucide-react'
 import { SynthesizeSpeech } from '@/lib/actions/audioGeneration.action'
 
-const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language }: GeneratePodcastProps) => {
+const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language, audioExampleRef}: GeneratePodcastProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePodcast = async () => {
     setAudio(null)
+    audioExampleRef?.current.pause()
     if (voiceType !== '') {
       setIsGenerating(true);
 
@@ -117,6 +118,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
         <audio
           controls
           src={props.audio}
+          ref={props.audioTestRef}
           autoPlay
           className="mt-5"
           onLoadedMetadata={(e) => {

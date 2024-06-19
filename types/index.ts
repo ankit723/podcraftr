@@ -56,6 +56,8 @@ export interface GeneratePodcastProps {
   setVoicePrompt: Dispatch<SetStateAction<string>>;
   setAudioDuration: Dispatch<SetStateAction<number>>;
   language:string;
+  audioExampleRef:any
+  audioTestRef:any
 }
 
 export interface GenerateThumbnailProps {

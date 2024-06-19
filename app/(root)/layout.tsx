@@ -1,4 +1,5 @@
 import LeftSideBar from "@/components/shared/leftSideBar";
+import PodcastPlayer from "@/components/shared/podcastPlayer";
 import RightSideBar from "@/components/shared/rightSideBar";
 import Image from "next/image";
 
@@ -33,6 +34,7 @@ export default function RootLayout({
 
         <RightSideBar />
       </main>
+      <PodcastPlayer />
     </div>
   );
 }

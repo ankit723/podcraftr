@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-// import { useAudio } from '@/providers/AudioProvider';
+import { useAudio } from '@/providers/audioProvider';
 import { PodcastDetailPlayerProps } from "@/types";
 import { deletePodcastById } from "@/lib/actions/podcast.action";
 import { Button } from "../ui/button";
@@ -18,7 +18,7 @@ const PodcastDetailPlayer = ({
   authorId,
 }: PodcastDetailPlayerProps) => {
   const router = useRouter();
-  // const { setAudio } = useAudio();
+  const { setAudio } = useAudio();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -33,13 +33,13 @@ const PodcastDetailPlayer = ({
   };
 
   const handlePlay = () => {
-    // setAudio({
-    //   title: podcastTitle,
-    //   audioUrl,
-    //   imageUrl,
-    //   author,
-    //   podcastId,
-    // });
+    setAudio({
+      title: podcastTitle,
+      audioUrl,
+      imageUrl,
+      author,
+      podcastId,
+    });
   };
 
   return (

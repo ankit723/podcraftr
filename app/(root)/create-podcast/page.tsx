@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessage,} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -33,6 +33,9 @@ const CreatePodcast = () => {
   const [podcastCategory, setPodcastCategory] = useState<string>('');
   const [voicePrompt, setVoicePrompt] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const audioExampleRef=useRef<any>(null)
+  const audioTestRef=useRef<any>(null)
 
   const form = useForm<any>({
     defaultValues: {
@@ -121,7 +124,12 @@ const CreatePodcast = () => {
 
             <div className="flex flex-col gap-2.5">
               <Label className="text-16 font-bold text-white-1">Select AI Voice</Label>
-              <Select onValueChange={(value) => setVoiceType(value)}>
+              <Select onValueChange={(value) => {
+                  setVoiceType(value)
+                  if(audioTestRef.current!=null){
+                    audioTestRef?.current.pause()
+                  }
+                }}>
                 <SelectTrigger className={cn('text-16 w-full border-none bg-black-1 text-gray-1 focus-visible:ring-offset-orange-1')}>
                   <SelectValue placeholder="Select AI Voice" className="placeholder:text-gray-1 " />
                 </SelectTrigger>
@@ -137,6 +145,7 @@ const CreatePodcast = () => {
                 </SelectContent>
                 {voiceType && (
                   <audio 
+                    ref={audioExampleRef}
                     src={`/${voiceType}.wav`}
                     autoPlay
                     className="hidden"
@@ -182,6 +191,8 @@ const CreatePodcast = () => {
                 setVoicePrompt={setVoicePrompt}
                 setAudioDuration={setAudioDuration}
                 language={voiceType.includes('hi-IN')?"hi-IN":"en-US"}
+                audioExampleRef={audioExampleRef}
+                audioTestRef={audioTestRef}
               />
 
               <GenerateThumbnail 
