@@ -12,6 +12,10 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: 'b.thumbs.redditmedia.com'
+            },
+            {
+                protocol: 'https',
                 hostname: 'storage.googleapis.com'
             },
             {

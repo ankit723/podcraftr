@@ -33,7 +33,7 @@ html {
     @apply text-heading2-bold text-light-1;
   }
   .input-class {
-    @apply text-16 placeholder:text-16 bg-black-1 rounded-[6px] placeholder:text-gray-1 border-none text-gray-1;
+    @apply text-16 placeholder:text-16 bg-black-1 rounded-[6px] placeholder:text-gray-1 border-none text-gray-1 items-center;
   }
   .podcast_grid {
     @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4;
@@ -88,6 +88,15 @@ html {
   width: 3px;
   height: 3px;
   border-radius: 2px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
