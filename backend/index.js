@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const querystring = require('querystring');
@@ -9,10 +10,8 @@ const port = process.env.PORT || 3001;
 // Use CORS middleware to allow requests from your frontend
 app.use(cors());
 
-const clientId = 'drUcfMXXw6ckkLFiT-VCMA';
-const clientSecret = 'ky0QaoNDf7NEgBfGfZ0f_c5XGyFDKw';
-const username = 'MathematicianIcy9284';
-const password = '.mjo9876';
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 app.get('/api/token', async (req, res) => {
     try {
