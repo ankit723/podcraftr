@@ -12,7 +12,7 @@ export const sidebarLinks = [
     {
       imgURL: "/icons/microphone.svg",
       route: "/create-podcast",
-      label: "Create Podcasts",
+      label: "Create Public Podcasts",
     },
 
     {

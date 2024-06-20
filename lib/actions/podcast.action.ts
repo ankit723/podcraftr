@@ -6,7 +6,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import Podcast from "../models/podcast.model";
 import { redirect } from "next/navigation";
 
-export async function createPodcast({podcastTitle, podcastDescription, podcastCategory, audioUrl, audioDuration, imageUrl, voiceType, voicePrompt, views}:any){
+export async function createPodcast({podcastTitle, podcastDescription, podcastCategory, audioUrl, audioDuration, imageUrl, voiceType, voicePrompt, views, type}:any){
     try{
         connectToDB()
         const cUser = await currentUser()
@@ -25,6 +25,7 @@ export async function createPodcast({podcastTitle, podcastDescription, podcastCa
 
         const newPodcast = new Podcast({
             id: `pod_${user.id}_${result}`,
+            type:type==='personal'?'personal':'public',
             podcastTitle,
             podcastDescription,
             podcastCategory,
@@ -56,7 +57,22 @@ export async function createPodcast({podcastTitle, podcastDescription, podcastCa
 export async function fetchPodcasts() {
     try {
         connectToDB()
-        const podcasts= await Podcast.find({})
+        const podcasts= await Podcast.find({type:'public'})
+        .populate({
+            path:"author",
+            model:User
+        })
+        return podcasts
+    }catch(error:any){
+        console.error("Error fetching podcasts:", error);
+        throw error;
+    }
+}
+
+export async function fetchPersonalPodcasts() {
+    try {
+        connectToDB()
+        const podcasts= await Podcast.find({type:'personal'})
         .populate({
             path:"author",
             model:User

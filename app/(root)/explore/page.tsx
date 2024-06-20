@@ -6,6 +6,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from 'next/router';
 
 const Explore = ({
   searchParams: { search },
@@ -29,7 +31,6 @@ const Explore = ({
           `${process.env.NEXT_PUBLIC_REDDIT_DOMAIN}/api/token`
         );
         const accessToken = tokenResponse.data.access_token;
-        console.log(accessToken);
 
         // Fetch stories from backend
         const storiesResponse = await axios.get(
@@ -50,7 +51,6 @@ const Explore = ({
 
     if (search) {
       fetchStories();
-      console.log(stories.map((s: any) => s.thumbnail));
     }
   }, [search]);
 
@@ -117,39 +117,26 @@ const Explore = ({
                   The scores can help you identify the best ones
                 </span>
               </p>
-              <div className="flex justify-between items-center">
-                <p className="flex items-center gap-2">
-                  <Image
-                    className="rounded-full bg-orange-1"
-                    src={
-                      selectedStory.thumbnail != "self"
-                        ? selectedStory.thumbnail
-                        : "/icons/avatar.svg"
-                    }
-                    alt="Avatar"
-                    width={35}
-                    height={35}
-                  />{" "}
-                  {selectedStory.author}
+              <Link href={{ pathname: '/from-online-source', query: { title: selectedStory.title, content: selectedStory.selftext} }} className="bg-orange-1">
+                <div className="flex justify-between items-center ">
+                  <p className="flex items-center gap-2">
+                    <Image className="rounded-full bg-orange-1"src={selectedStory.thumbnail != "self"? selectedStory.thumbnail: "/icons/avatar.svg"}alt="Avatar"width={35}height={35}/>{" "}{selectedStory.author}
+                  </p>
+                  <p className="text-white-2 text-small-medium">
+                    {new Date(selectedStory.created_utc * 1000).toLocaleString()}
+                  </p>
+                </div>
+                <h2 className="font-extrabold">{selectedStory.title}</h2>
+                <p className="text-white-2 m-0 cursor-pointer">
+                  {selectedStory.selftext}
                 </p>
-                <p className="text-white-2 text-small-medium">
-                  Posted on:{" "}
-                  {new Date(selectedStory.created_utc * 1000).toLocaleString()}
-                </p>
-              </div>
-              <h2 className="font-extrabold">{selectedStory.title}</h2>
-              <p className="text-white-2 m-0 cursor-pointer">
-                {selectedStory.selftext}
-              </p>
+              </Link>
 
               <h3 className="mt-10 text-body-bold">Comments:</h3>
               <div className="">
                 <ul className="grid grid-cols-1 md:grid-cols-1 gap-6">
                   {comments.map((comment: any) => (
-                    <li
-                      key={comment.id}
-                      className="bg-[#232327] hover:shadow-2xl text-white-2 p-4 rounded-lg mb-4 cursor-pointer"
-                    >
+                    <li key={comment.id}className="bg-[#232327] hover:shadow-2xl text-white-2 p-4 rounded-lg mb-4 cursor-pointer">
                       <p>{comment.body}</p>
                       <p className="text-orange-1 text-small-medium">Score: {comment.score}</p>
                     </li>

@@ -15,7 +15,8 @@ const PodcastSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
-    authorId:{type:String, required:true}
+    authorId:{type:String, required:true},
+    type:{type:String, required:true, default:"public"}
 });
 
 const Podcast = mongoose.models.Podcast || mongoose.model('Podcast', PodcastSchema);

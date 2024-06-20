@@ -22,7 +22,7 @@ const ExploreSearchBar = () => {
     <div className="relative mt-8 block">
       <Input 
         className="input-class py-6 pl-12 focus-visible:ring-offset-orange-1"
-        placeholder='Search for themes'
+        placeholder='Search for anything you want to listen...'
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onLoad={() => setSearch('')}

@@ -21,7 +21,7 @@ const voiceCategories = ['en-US-Journey-D', 'en-US-Journey-F', 'en-US-Journey-O'
 
 const podcastCategoryList=['Romance', 'Action', 'Drama', 'Horror', 'Funny']
 
-const CreatePodcast = () => {
+const CreatePodcastFromOnlineSource = ({title, content}:{title:string, content:string}) => {
   const {user}=useUser()
   const router = useRouter()
   if(!user)router.push('/sign-in')
@@ -30,14 +30,14 @@ const CreatePodcast = () => {
   const [audioDuration, setAudioDuration] = useState(0);
   const [voiceType, setVoiceType] = useState<string>('');
   const [podcastCategory, setPodcastCategory] = useState<string>('');
-  const [voicePrompt, setVoicePrompt] = useState('');
+  const [voicePrompt, setVoicePrompt] = useState(content);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const audioExampleRef=useRef<any>(null)
   const audioTestRef=useRef<any>(null)
 
   const form = useForm<any>({
     defaultValues: {
-      podcastTitle: "",
+      podcastTitle: title,
       podcastDescription: "",
       podcastCategory: "",
       audioUrl: '',
@@ -87,6 +87,7 @@ const CreatePodcast = () => {
         voiceType: data.voiceType,
         voicePrompt: data.voicePrompt,
         views: 0,
+        type:"personal"
       })
 
       // alert({ title: 'Podcast created' });
@@ -104,7 +105,7 @@ const CreatePodcast = () => {
 
   return (
     <section className="mt-10 flex flex-col">
-      <h1 className="text-20 font-bold text-white-1">Create Podcast</h1>
+      <h1 className="text-20 font-bold text-white-1">Create Personal Podcast</h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-12 flex w-full flex-col">
@@ -217,4 +218,4 @@ const CreatePodcast = () => {
   )
 }
 
-export default CreatePodcast;
+export default CreatePodcastFromOnlineSource;
