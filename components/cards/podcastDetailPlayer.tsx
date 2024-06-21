@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAudio } from '@/providers/audioProvider';
 import { PodcastDetailPlayerProps } from "@/types";
-import { deletePodcastById } from "@/lib/actions/podcast.action";
+import { deletePodcastById, editPodcastTypeById } from "@/lib/actions/podcast.action";
 import { Button } from "../ui/button";
 
 const PodcastDetailPlayer = ({
@@ -16,7 +16,8 @@ const PodcastDetailPlayer = ({
   isOwner,
   authorImageUrl,
   authorId,
-}: PodcastDetailPlayerProps) => {
+  type
+}: any) => {
   const router = useRouter();
   const { setAudio } = useAudio();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -32,16 +33,27 @@ const PodcastDetailPlayer = ({
     }
   };
   
-  // const handleMakePublic = async () => {
-  //   try {
-  //     await EditPodcastById(podcastId);
-  //     alert("Podcast Made Public successfully")
-  //     router.push("/");
-  //   } catch (error) {
-  //     console.error("Error deleting podcast", error);
-  //     alert("Error deleting podcast")
-  //   }
-  // };
+  const handleMakePublic = async () => {
+    try {
+      await editPodcastTypeById(podcastId, "public");
+      alert("Podcast Made Public successfully")
+      router.push("/");
+    } catch (error) {
+      console.error("Error deleting podcast", error);
+      alert("Error deleting podcast")
+    }
+  };
+
+  const handleMakePrivate = async () => {
+    try {
+      await editPodcastTypeById(podcastId, "private");
+      alert("Podcast Made Private successfully")
+      router.push("/");
+    } catch (error) {
+      console.error("Error deleting podcast", error);
+      alert("Error deleting podcast")
+    }
+  };
 
   const handlePlay = () => {
     setAudio({
@@ -124,15 +136,27 @@ const PodcastDetailPlayer = ({
                 <h2 className="text-16 font-normal text-white-1">Delete</h2>
               </div>
 
-              {/* <div className="flex w-32 cursor-pointer gap-2 py-1.5 hover:bg-black-2"onClick={handleMakePublic}>
-                <Image
-                  src="/icons/edit.svg"
-                  width={16}
-                  height={16}
-                  alt="Delete icon"
-                  />
-                <h2 className="text-16 font-normal text-white-1">Make Public</h2>
-              </div> */}
+              {type==="public"?(
+                <div className="flex w-32 cursor-pointer gap-2 py-1.5 hover:bg-black-2"onClick={handleMakePrivate}>
+                  <Image
+                    src="/icons/edit.svg"
+                    width={16}
+                    height={16}
+                    alt="Delete icon"
+                    />
+                  <h2 className="text-16 font-normal text-white-1">Make Private</h2>
+                </div>
+              ):(
+                <div className="flex w-32 cursor-pointer gap-2 py-1.5 hover:bg-black-2"onClick={handleMakePublic}>
+                  <Image
+                    src="/icons/edit.svg"
+                    width={16}
+                    height={16}
+                    alt="Delete icon"
+                    />
+                  <h2 className="text-16 font-normal text-white-1">Make Public</h2>
+                </div>
+              )}
             </div>
 
           )}

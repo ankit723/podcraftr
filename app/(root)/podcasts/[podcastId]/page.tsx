@@ -32,6 +32,7 @@ const PodcastDetails = async({params}:{params:{podcastId:string}}) => {
         podcastId={podcast.id}
         authorImageUrl={podcast.author.imageUrl}
         authorId={podcast.authorId}
+        type={podcast.type}
       />
       <p className='text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center'>{podcast?.podcastDescription}</p>
 

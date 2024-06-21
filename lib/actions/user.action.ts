@@ -13,7 +13,16 @@ interface Params {
     bio: string;
     imageUrl: string;
     path: string;
+}
+
+export async function fetchUsers() {
+  try {
+    connectToDB();
+    return await User.find({})
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`);
   }
+}
 
 export async function updateUser({
     id,
@@ -50,13 +59,13 @@ export async function updateUser({
 }
 
 export async function fetchUser(userId: string) {
-    try {
-      connectToDB();
-  
-      return await User.findOne({ id: userId })
-    } catch (error: any) {
-      throw new Error(`Failed to fetch user: ${error.message}`);
-    }
+  try {
+    connectToDB();
+
+    return await User.findOne({ id: userId })
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`);
+  }
 }
 
 export async function fetchUserPodacast(userId:string){

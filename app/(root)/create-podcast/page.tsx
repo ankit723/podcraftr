@@ -19,7 +19,7 @@ import { useUser } from "@clerk/nextjs"
 
 const voiceCategories = ['en-US-Journey-D', 'en-US-Journey-F', 'en-US-Journey-O', 'en-US-News-L', 'en-US-News-N', 'en-US-Polyglot-1', 'en-US-Studio-O', 'en-US-Studio-Q', 'en-US-Wavenet-D', 'hi-IN-Neural2-A', 'hi-IN-Neural2-D', 'hi-IN-Wavenet-A', 'hi-IN-Wavenet-D', 'hi-IN-Neural2-B', 'hi-IN-Neural2-C', 'hi-IN-Wavenet-B', 'hi-IN-Wavenet-C'];
 
-const podcastCategoryList=['Romance', 'Action', 'Drama', 'Horror', 'Funny']
+const podcastCategoryList=['Romance', 'Sci-Fi', 'Mystry', 'Horror', 'Humour']
 
 const CreatePodcast = () => {
   const {user}=useUser()

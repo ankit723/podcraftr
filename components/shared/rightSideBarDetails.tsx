@@ -8,9 +8,11 @@ import Carousel from './carousel';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 
-const RightSideBarDetails = ({ podcasts }:any) => {
-    const {user}=useUser()
-    const router =useRouter()
+const RightSideBarDetails = ({ podcasts, users }:any) => {
+  const {user}=useUser()
+  const router =useRouter()
+
+  console.log(podcasts)
   return (
     <section className='right_sidebar'>
       <SignedIn>
@@ -32,15 +34,15 @@ const RightSideBarDetails = ({ podcasts }:any) => {
         <Header headerTitle="Top Podcraftrs" />
 
         <div className="flex flex-col gap-6">
-            {podcasts.slice(0, 5).map((pod:any)=>(
-                <div key={pod._doc.id} className="flex cursor-pointer justify-between" onClick={()=>router.push(`/profile/${pod._doc.author.id}`)}>
+            {users.map((pod:any)=>(
+                <div key={pod.id} className="flex cursor-pointer justify-between" onClick={()=>router.push(`/profile/${pod.id}`)}>
                     <figure className='flex items-center gap-2'>
-                        <Image src={pod._doc.author.imageUrl} alt='podcaster-name' width={44} height={44} className='aspect-square rounded-lg'/>
-                        <h2 className='text-14 font-semibold text-white-1'>{pod._doc.author.name} <br /> <span className=' text-white-3 text-tiny-medium'>{pod._doc.author.username}</span></h2>
+                        <Image src={pod.imageUrl} alt='podcaster-name' width={44} height={44} className='aspect-square rounded-lg'/>
+                        <h2 className='text-14 font-semibold text-white-1'>{pod.name} <br /> <span className=' text-white-3 text-tiny-medium'>{pod.username}</span></h2>
                     </figure>
                     <div className="flex items-center">
                         <Button className="text-12 bg-orange-1 font-normal text-white-1">
-                            <Link href={`/profile/${pod._doc.author.id}`}>View</Link>
+                            <Link href={`/profile/${pod.id}`}>View</Link>
                         </Button>
                     </div>
                 </div>

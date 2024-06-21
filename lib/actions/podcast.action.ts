@@ -114,7 +114,15 @@ export async function fetchPodcastByCategory(podcastCategory:string) {
     }
 }
 
-
+export async function editPodcastTypeById(id: string, type:string){
+    try {
+        connectToDB()
+        await Podcast.findOneAndUpdate({id}, {type})
+    }catch(error:any){
+        console.error("Error changing the the type of the podcasts:", error);
+        throw error;
+    }    
+}
 
 
 export async function deletePodcastById(id:string) {
