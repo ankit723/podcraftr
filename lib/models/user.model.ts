@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   podcasts:[
     {
       type:mongoose.Schema.Types.ObjectId,
-      ref:'Knot'
+      ref:'Podcast'
     }
   ],
 });

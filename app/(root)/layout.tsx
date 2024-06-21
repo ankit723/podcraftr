@@ -2,6 +2,7 @@ import LeftSideBar from "@/components/shared/leftSideBar";
 import PodcastPlayer from "@/components/shared/podcastPlayer";
 import RightSideBar from "@/components/shared/rightSideBar";
 import Image from "next/image";
+import MobileNav from "@/components/shared/mobileNav";
 
 export default function RootLayout({
   children,
@@ -22,7 +23,7 @@ export default function RootLayout({
                 height={30}
                 alt="menu icon"
               />
-              MobileNav
+              <MobileNav />
             </div>
             <div className="flex flex-col md:pb-14">
 

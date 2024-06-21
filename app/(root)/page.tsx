@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { podcastData } from '@/constants'
 import PodcastCard from '@/components/cards/podcastCard'
 import { fetchPodcasts } from '@/lib/actions/podcast.action'
 
