@@ -86,7 +86,7 @@ const Explore = ({
   return (
     <div className={`flex flex-col gap-9 ${search ? "" : "justify-center"}`}>
       <ExploreSearchBar />
-      <h1 className="text-orange-1">We are Using Reddit's Search Endpoints to find your stories...</h1>
+      <h1 className="text-orange-1">We are Using Reddit&apos;s Search Endpoints to find your stories...</h1>
       {search ? (
         <div className="flex flex-col gap-9">
           <h1 className="text-20 font-bold text-white-1">
@@ -151,7 +151,7 @@ const Explore = ({
                   >
                     <div className="p-6">
                       <div className="flex items-center mb-4">
-                        <img
+                        <Image
                           className="w-10 h-10 rounded-full mr-4 bg-orange-1"
                           src={
                             story.thumbnail != "self"
@@ -159,6 +159,8 @@ const Explore = ({
                               : "/icons/avatar.svg"
                           }
                           alt="Avatar"
+                          width={24}
+                          height={24}
                         />
                         <div className="text-sm flex items-center justify-between w-full">
                           <p className="text-white-1 leading-none">
