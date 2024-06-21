@@ -8,10 +8,12 @@ import { cn } from '@/lib/utils'
 import { SignedOut, SignedIn } from '@clerk/nextjs'
 import { SignOutButton } from '@clerk/nextjs'
 import { Button } from '../ui/button'
+import { useUser } from '@clerk/nextjs'
 
 const LeftSideBar = () => {
   const pathname=usePathname()
   const router = useRouter()
+  const {user}=useUser()
   return (
     <section className='left_sidebar '>
       <nav className='flex flex-col gap-6'>
@@ -22,6 +24,7 @@ const LeftSideBar = () => {
 
         {sidebarLinks.map(({route, label, imgURL})=>{
           const isActive = pathname===route || route.startsWith(`${route}/`)
+          if(route==='/profile')route=`${route}/${user?.id}`
           return(
             <Link href={route} key={label} className={cn('flex gap-3 items-center py-4 max-lg:px-4 justify-center lg:justify-start', {'bg-nav-focus border-r-4 border-orange-1':isActive})}>
               <Image src={imgURL} alt={label} width={24} height={24}/>

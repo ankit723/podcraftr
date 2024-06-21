@@ -28,11 +28,11 @@ const ExploreSearchBar = () => {
         onLoad={() => setSearch('')}
       />
       <Image 
-        src="/icons/search.svg"
+        src="/icons/reddit.webp"
         alt="search"
-        height={20}
-        width={20}
-        className="absolute left-4 top-3.5"
+        height={45}
+        width={45}
+        className="absolute left-1 top-0.5"
       />
     </div>
   )

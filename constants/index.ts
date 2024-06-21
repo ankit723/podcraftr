@@ -14,11 +14,15 @@ export const sidebarLinks = [
       route: "/create-podcast",
       label: "Create Public Podcasts",
     },
-
     {
       imgURL: "/icons/headphone.svg",
       route: "/explore",
       label: "Explore & Listen ",
+    },
+    {
+      imgURL: "/icons/profile.svg",
+      route: "/profile",
+      label: "Profile",
     },
   ];
   

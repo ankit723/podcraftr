@@ -31,6 +31,17 @@ const PodcastDetailPlayer = ({
       alert("Error deleting podcast")
     }
   };
+  
+  // const handleMakePublic = async () => {
+  //   try {
+  //     await EditPodcastById(podcastId);
+  //     alert("Podcast Made Public successfully")
+  //     router.push("/");
+  //   } catch (error) {
+  //     console.error("Error deleting podcast", error);
+  //     alert("Error deleting podcast")
+  //   }
+  // };
 
   const handlePlay = () => {
     setAudio({
@@ -99,18 +110,31 @@ const PodcastDetailPlayer = ({
             onClick={() => setIsDeleting((prev) => !prev)}
           />
           {isDeleting && (
-            <div
-              className="absolute -left-32 -top-2 z-10 flex w-32 cursor-pointer justify-center gap-2 rounded-md bg-black-6 py-1.5 hover:bg-black-2"
-              onClick={handleDelete}
-            >
-              <Image
-                src="/icons/delete.svg"
-                width={16}
-                height={16}
-                alt="Delete icon"
-              />
-              <h2 className="text-16 font-normal text-white-1">Delete</h2>
+            <div className="absolute -left-32 bg-black-6 py-1.5 px-1.5 rounded-md flex flex-col items-start justify-center">
+              <div
+                className="flex w-32 cursor-pointer gap-2 py-1.5 hover:bg-black-2"
+                onClick={handleDelete}
+                >
+                <Image
+                  src="/icons/delete.svg"
+                  width={16}
+                  height={16}
+                  alt="Delete icon"
+                  />
+                <h2 className="text-16 font-normal text-white-1">Delete</h2>
+              </div>
+
+              {/* <div className="flex w-32 cursor-pointer gap-2 py-1.5 hover:bg-black-2"onClick={handleMakePublic}>
+                <Image
+                  src="/icons/edit.svg"
+                  width={16}
+                  height={16}
+                  alt="Delete icon"
+                  />
+                <h2 className="text-16 font-normal text-white-1">Make Public</h2>
+              </div> */}
             </div>
+
           )}
         </div>
       )}

@@ -102,7 +102,7 @@ export async function fetchPodcastById(id:string) {
 export async function fetchPodcastByCategory(podcastCategory:string) {
     try {
         connectToDB()
-        const podcasts= await Podcast.find({podcastCategory})
+        const podcasts= await Podcast.find({podcastCategory, type:"public"})
         .populate({
             path:"author",
             model:User

@@ -86,6 +86,7 @@ const Explore = ({
   return (
     <div className={`flex flex-col gap-9 ${search ? "" : "justify-center"}`}>
       <ExploreSearchBar />
+      <h1 className="text-orange-1">We are Using Reddit's Search Endpoints to find your stories...</h1>
       {search ? (
         <div className="flex flex-col gap-9">
           <h1 className="text-20 font-bold text-white-1">
@@ -97,18 +98,13 @@ const Explore = ({
           </h1>
 
           {isLoading ? (
-            <div className="text-orange-1">Fetching stories from reddit...</div>
+            <div className="text-orange-1 h-[50vh] w-full flex flex-col justify-center items-center">Fetching stories from reddit... <Image src="/icons/reddit.webp" alt="" width={100} height={100}/></div>
           ) : error ? (
             <div>Error: {error.message}</div>
           ) : selectedStory ? (
             <div className="text-white-1 flex flex-col gap-5 h-[80vh] overflow-y-auto no-scrollbar">
               <div className="flex justify-start items-center">
-                <Button
-                  className="bg-orange-1"
-                  onClick={() => setSelectedStory(null)}
-                >
-                  Back
-                </Button>
+                <Button className="bg-orange-1"onClick={() => setSelectedStory(null)}>Back</Button>
               </div>
               <p className="text-center text-orange-1">
                 Click on any paragraph you want Podcraftr to automaticaly
@@ -189,7 +185,7 @@ const Explore = ({
               </div>
             </div>
           ) : (
-            <div>No stories found for this genre.</div>
+            <div className="text-white-3 h-[50vh] w-full flex flex-col justify-center items-center">No Results Found! Try Searching somthing else!... <Image src="/icons/reddit.webp" alt="" width={100} height={100}/></div>
           )}
         </div>
       ) : (
