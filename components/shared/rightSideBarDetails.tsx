@@ -8,7 +8,7 @@ import Carousel from './carousel';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 
-const RightSideBarDetails = ({ podcasts, users }:any) => {
+const RightSideBarDetails = ({ podcasts, users, currentUser }:any) => {
   const {user}=useUser()
   const router =useRouter()
 
@@ -17,9 +17,12 @@ const RightSideBarDetails = ({ podcasts, users }:any) => {
     <section className='right_sidebar'>
       <SignedIn>
         <Link href={`/profile/${user?.id}`} className='flex gap-3 pb-12'>
-          <UserButton />
+          <Image src={currentUser.imageUrl} width={50} height={50} alt="Profile photo" className="rounded-full bg-orange-1"/>
           <div className="flex w-full items-center justify-between">
-            <h1 className='text-16 truncate font-semibold text-white-1'>{user?.firstName} {user?.lastName}</h1>
+            <div className="">
+              <h1 className='text-16 truncate font-semibold text-white-1'>{currentUser.name}</h1>
+              <h1 className='truncate text-small-semibold text-white-2'>{currentUser.username}</h1>
+            </div>
             <Image src="/icons/right-arrow.svg" alt="arrow" width={24} height={24}/>
           </div>
         </Link>
