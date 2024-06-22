@@ -132,8 +132,8 @@ const Explore = ({
               <div className="">
                 <ul className="grid grid-cols-1 md:grid-cols-1 gap-6">
                   {comments.map((comment: any) => (
-                    <Link href={{ pathname: '/from-online-source', query: { title: selectedStory.title, content: comment.body} }}>
-                      <li key={comment.id}className="bg-[#232327] hover:shadow-2xl text-white-2 p-4 rounded-lg mb-4 cursor-pointer hover:bg-[#ffffff3d]">
+                    <Link  key={comment.id} href={{ pathname: '/from-online-source', query: { title: selectedStory.title, content: comment.body} }}>
+                      <li className="bg-[#232327] hover:shadow-2xl text-white-2 p-4 rounded-lg mb-4 cursor-pointer hover:bg-[#ffffff3d]">
                         <p>{comment.body}</p>
                         <p className="text-orange-1 text-small-medium">Score: {comment.score}</p>
                       </li>
