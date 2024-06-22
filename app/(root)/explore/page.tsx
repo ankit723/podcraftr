@@ -113,7 +113,7 @@ const Explore = ({
                   The scores can help you identify the best ones
                 </span>
               </p>
-              <Link href={{ pathname: '/from-online-source', query: { title: selectedStory.title, content: selectedStory.selftext} }} className="bg-orange-1">
+              <Link href={{ pathname: '/from-online-source', query: { title: selectedStory.title, content: selectedStory.selftext} }} className="hover:bg-[#ffffff3d] p-4 rounded-lg">
                 <div className="flex justify-between items-center ">
                   <p className="flex items-center gap-2">
                     <Image className="rounded-full bg-orange-1"src={selectedStory.thumbnail != "self"? selectedStory.thumbnail: "/icons/avatar.svg"}alt="Avatar"width={35}height={35}/>{" "}{selectedStory.author}
@@ -132,10 +132,12 @@ const Explore = ({
               <div className="">
                 <ul className="grid grid-cols-1 md:grid-cols-1 gap-6">
                   {comments.map((comment: any) => (
-                    <li key={comment.id}className="bg-[#232327] hover:shadow-2xl text-white-2 p-4 rounded-lg mb-4 cursor-pointer">
-                      <p>{comment.body}</p>
-                      <p className="text-orange-1 text-small-medium">Score: {comment.score}</p>
-                    </li>
+                    <Link href={{ pathname: '/from-online-source', query: { title: selectedStory.title, content: comment.body} }}>
+                      <li key={comment.id}className="bg-[#232327] hover:shadow-2xl text-white-2 p-4 rounded-lg mb-4 cursor-pointer hover:bg-[#ffffff3d]">
+                        <p>{comment.body}</p>
+                        <p className="text-orange-1 text-small-medium">Score: {comment.score}</p>
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               </div>
@@ -154,9 +156,7 @@ const Explore = ({
                         <Image
                           className="w-10 h-10 rounded-full mr-4 bg-orange-1"
                           src={
-                            story.thumbnail != "self"
-                              ? story.thumbnail
-                              : "/icons/avatar.svg"
+                            "/icons/avatar.svg"
                           }
                           alt="Avatar"
                           width={24}

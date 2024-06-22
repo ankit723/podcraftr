@@ -3,11 +3,18 @@ import ProfileCard from "@/components/cards/profileCard";
 import { fetchUser, fetchUserPodacast } from "@/lib/actions/user.action";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 
 const ProfilePage = async({params}: {params: {profileId: string};}) => {
+  if(!params.profileId)redirect('/sign-in')
   const user = await fetchUser(params.profileId);
   const podcastsData = await fetchUserPodacast(params.profileId);
+  const cUser= await currentUser()
+  if(!cUser)redirect('/sign-in')
+  const userInfo=await fetchUser(cUser?.id)
+  if(!userInfo) redirect('/onboarding')
   console.log(podcastsData)
   
 
@@ -28,7 +35,8 @@ const ProfilePage = async({params}: {params: {profileId: string};}) => {
       <section className="mt-9 flex flex-col gap-5">
         <div className="flex justify-between items-center w-full">
           <h1 className="text-20 font-bold text-white-1">All Podcasts</h1>
-          <Link href='/create-podcast'><Button className="text-white-1 font-extrabold bg-orange-1">Create Podcast +</Button></Link>
+
+          {cUser?.id===params.profileId?<Link href='/create-podcast'><Button className="text-white-1 font-extrabold bg-orange-1">Create Podcast +</Button></Link>:""}
         </div>
         {podcastsData && podcastsData.podcasts.length > 0 ? (
           <div className="podcast_grid">

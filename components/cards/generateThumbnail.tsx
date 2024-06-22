@@ -53,6 +53,7 @@ const GenerateThumbnail = ({ setImage, image }: GenerateThumbnailProps) => {
   return (
     <>
       <div className="image_div" onClick={() => imageRef?.current?.click()}>
+        
         <Input
           type="file"
           className="hidden"
