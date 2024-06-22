@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet"
 import { sidebarLinks } from "@/constants"
 import { cn } from "@/lib/utils"
+import { useUser } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -15,6 +16,7 @@ import { usePathname } from "next/navigation"
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const {user}=useUser()
 
   return (
     <section>
@@ -32,6 +34,7 @@ const MobileNav = () => {
               <nav className="flex h-full flex-col gap-6 text-white-1">
               {sidebarLinks.map(({ route, label, imgURL }) => {
                 const isActive = pathname === route || pathname.startsWith(`${route}/`);
+                if(route==="/profile")route=`/profile/${user?.id}`
 
                 return <SheetClose asChild key={route}><Link href={route} className={cn("flex gap-3 items-center py-4 max-lg:px-4 justify-start", {
                   'bg-nav-focus border-r-4 border-orange-1': isActive

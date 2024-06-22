@@ -15,7 +15,6 @@ const ProfilePage = async({params}: {params: {profileId: string};}) => {
   if(!cUser)redirect('/sign-in')
   const userInfo=await fetchUser(cUser?.id)
   if(!userInfo) redirect('/onboarding')
-  console.log(podcastsData)
   
 
   if (!user || !podcastsData) return "";
