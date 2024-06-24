@@ -1,5 +1,5 @@
-import PodcastCard from "@/components/cards/podcastCard";
 import ProfileCard from "@/components/cards/profileCard";
+import PodcastCard from "@/components/cards/podcastCard";
 import { fetchUser, fetchUserPodacast } from "@/lib/actions/user.action";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -29,6 +29,7 @@ const ProfilePage = async({params}: {params: {profileId: string};}) => {
           podcastData={podcastsData!}
           imageUrl={user?.imageUrl!}
           userFirstName={user?.name!}
+          userId={user?.id}
         />
       </div>
       <section className="mt-9 flex flex-col gap-5">

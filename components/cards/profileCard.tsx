@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
+import CopyTextButton from "../ui/copyButton";
 
 const ProfileCard = ({
   podcastData,
   imageUrl,
   userFirstName,
+  userId
 }: any) => {
 
   return (
@@ -32,6 +34,7 @@ const ProfileCard = ({
           <h1 className="text-32 font-extrabold tracking-[-0.32px] text-white-1">
             {userFirstName}
           </h1>
+          <p className="text-white-1">User Id: &nbsp;<CopyTextButton textToCopy={userId} /></p>
         </div>
         <figure className="flex gap-3 py-6 items-center justify-start">
           <Image
