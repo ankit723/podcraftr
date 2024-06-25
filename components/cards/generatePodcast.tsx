@@ -64,7 +64,7 @@ const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language, audioE
 const GeneratePodcast = (props: GeneratePodcastProps) => {
   const { isGenerating, generatePodcast, savePodcast } = useGeneratePodcast(props);
   const [characterCount, setCharacterCount] = useState(props.voicePrompt ? props.voicePrompt.length : 0);
-  const isJourneyVoice = props.voiceType.includes('Journey');
+  const isJourneyVoice = false;
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
@@ -95,10 +95,9 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           rows={(Math.floor((characterCount)*(1/133))*2)<10?10:Math.floor((characterCount)*(1/133))*2}
           value={props.voicePrompt}
           onChange={handleTextChange}
-          maxLength={isJourneyVoice ? 1450 : undefined}
         />
         <div className="text-right text-small-regular text-white-3">
-          {characterCount} {isJourneyVoice&&"/ 1450 characters"}
+          {characterCount} 
         </div>
       </div>
       <div className="mt-5 w-full max-w-[200px] flex">
