@@ -1,14 +1,10 @@
-'use server'
+'use server';
 import { Storage } from '@google-cloud/storage';
 import textToSpeech, { protos } from '@google-cloud/text-to-speech';
-import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
 
-const ffmpegPath = '/opt/homebrew/bin/ffmpeg'; // Set the correct path here
-console.log('Using FFmpeg path:', ffmpegPath);
-ffmpeg.setFfmpegPath(ffmpegPath);
 // Parse credentials from environment variables
 const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CLOUD_CREDENTIALS_JSON || "{}");
 const speechCredentials = JSON.parse(process.env.GOOGLE_APPLICATION_TTS_CREDENTIALS_JSON || "{}");
@@ -32,53 +28,36 @@ async function uploadAndMakePublic(bucket: any, filename: string, audioContent: 
     return `https://storage.googleapis.com/${bucketName}/${filename}`;
 }
 
-async function concatenateAudio(files: string[]): Promise<Buffer> {
-    return new Promise((resolve, reject) => {
-        const command = ffmpeg();
-
-        // Log files for debugging
-        console.log('Files to concatenate:', files);
-
-        files.forEach(file => {
-            if (!fs.existsSync(file)) {
-                console.error('File does not exist:', file);
-                reject(new Error(`File not found: ${file}`));
-            }
-            command.input(file);
-        });
-
-        const outputPath = path.join(os.tmpdir(), `output-${Date.now()}.mp3`);
-
-        command
-            .on('error', (err) => {
-                console.error('Error during audio concatenation:', err);
-                reject(err);
-            })
-            .on('end', () => {
-                console.log('Audio concatenation finished');
-                fs.readFile(outputPath, (err, data) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(data);
-                    }
-                });
-            })
-            .mergeToFile(outputPath, os.tmpdir()); // Use mergeToFile instead of save
-
+function concatenateBuffers(buffers: Buffer[]): Buffer {
+    let totalLength = 0;
+    buffers.forEach(buffer => {
+        totalLength += buffer.length;
     });
+
+    const resultBuffer = Buffer.alloc(totalLength);
+    let offset = 0;
+
+    buffers.forEach(buffer => {
+        buffer.copy(resultBuffer, offset);
+        offset += buffer.length;
+    });
+
+    return resultBuffer;
 }
 
+interface SynthesizeSpeechParams {
+    text: string;
+    voiceType: string;
+    language: string;
+    save: boolean;
+}
 
+interface SynthesizeSpeechResult {
+    publicUrl: string;
+    outputFilename: string;
+}
 
-
-export async function SynthesizeSpeech({ text, voiceType, language, save }: {
-    text: string,
-    voiceType: string,
-    language: string,
-    save: boolean
-}): Promise<{ publicUrl: string; outputFilename: string }> {
-
+export async function SynthesizeSpeech({ text, voiceType, language, save }: SynthesizeSpeechParams): Promise<SynthesizeSpeechResult> {
     const synthesisInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text };
 
     const voice: protos.google.cloud.texttospeech.v1.IVoiceSelectionParams = {
@@ -95,8 +74,8 @@ export async function SynthesizeSpeech({ text, voiceType, language, save }: {
 
         if (voiceType.includes("Journey") && text.length > 1000) {
             const textChunks = text.match(/.{1,1000}/g) || [];
-            console.log(textChunks)
-            const audioFiles: string[] = [];
+            console.log(textChunks);
+            const audioBuffers: Buffer[] = [];
 
             for (let i = 0; i < textChunks.length; i++) {
                 const chunkInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text: textChunks[i] };
@@ -110,19 +89,14 @@ export async function SynthesizeSpeech({ text, voiceType, language, save }: {
                     throw new Error('Failed to synthesize speech for chunk');
                 }
 
-                const chunkFilename = path.join(os.tmpdir(), `audio-chunk-${Date.now()}-${i}.mp3`);
-                fs.writeFileSync(chunkFilename, response.audioContent as Buffer);
-                audioFiles.push(chunkFilename);
+                audioBuffers.push(response.audioContent as Buffer);
             }
 
-            // Concatenate audio files
-            const concatenatedAudioBuffer = await concatenateAudio(audioFiles);
+            // Concatenate audio buffers
+            const concatenatedAudioBuffer = concatenateBuffers(audioBuffers);
 
             const outputFilename = `audio-${Date.now()}.mp3`;
             const outputUrl = await uploadAndMakePublic(bucket, outputFilename, concatenatedAudioBuffer);
-
-            // Cleanup temporary files
-            audioFiles.forEach(file => fs.unlinkSync(file));
 
             return { publicUrl: outputUrl, outputFilename };
         } else {
