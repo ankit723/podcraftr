@@ -1,9 +1,6 @@
 'use server';
 import { Storage } from '@google-cloud/storage';
 import textToSpeech, { protos } from '@google-cloud/text-to-speech';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
 
 // Parse credentials from environment variables
 const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CLOUD_CREDENTIALS_JSON || "{}");

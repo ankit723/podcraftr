@@ -135,9 +135,8 @@ const CreatePodcast = () => {
                   {voiceCategories.map((category) => (
                     <div key={category}>
                     {category.includes('Journey')?
-                      <SelectItem key={category} value={category} className="capitalize flex justify-between w-full items-center  focus:bg-orange-1">
-                        {category} &nbsp; <span className=" text-tiny-medium text-white-2">Only 1450 chars with Standard Plan</span>
-                      </SelectItem>:<SelectItem key={category} value={category} className="capitalize focus:bg-orange-1">{category}</SelectItem>}
+                      <SelectItem key={category} value={category} className="capitalize flex justify-between w-full items-center  focus:bg-orange-1">{category}</SelectItem>:
+                      <SelectItem key={category} value={category} className="capitalize focus:bg-orange-1">{category}</SelectItem>}
                     </div>
                   ))}
                 </SelectContent>
