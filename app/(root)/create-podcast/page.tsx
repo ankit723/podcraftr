@@ -22,6 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import GeneratePodcast from "@/components/cards/generatePodcast";
+import GenerateStories from "@/components/cards/generateStories";
 import GenerateThumbnail from "@/components/cards/generateThumbnail";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -61,6 +62,7 @@ const CreatePodcast = () => {
   const [voiceType, setVoiceType] = useState<string>("");
   const [podcastCategory, setPodcastCategory] = useState<string>("");
   const [voicePrompt, setVoicePrompt] = useState("");
+  const [storyVoicePrompt, setStoryVoicePrompt] = useState<any>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const audioExampleRef = useRef<any>(null);
   const audioTestRef = useRef<any>(null);
@@ -302,16 +304,11 @@ const CreatePodcast = () => {
                 />
               </TabsContent>
               <TabsContent value="password" className="mt-10">
-                <GeneratePodcast
+                <GenerateStories 
                   setAudio={setAudioUrl}
-                  voiceType={voiceType.trim()}
                   audio={audioUrl}
-                  voicePrompt={voicePrompt}
-                  setVoicePrompt={setVoicePrompt}
-                  setAudioDuration={setAudioDuration}
-                  language={voiceType.includes("hi-IN") ? "hi-IN" : "en-US"}
-                  audioExampleRef={audioExampleRef}
-                  audioTestRef={audioTestRef}
+                  voicePrompt={storyVoicePrompt}
+                  setVoicePrompt={setStoryVoicePrompt}
                 />
               </TabsContent>
             </Tabs>
