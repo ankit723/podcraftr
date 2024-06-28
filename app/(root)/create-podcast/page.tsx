@@ -66,6 +66,7 @@ const CreatePodcast = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const audioExampleRef = useRef<any>(null);
   const audioTestRef = useRef<any>(null);
+  const voiceTypeRef = useRef<any>(null);
 
   const form = useForm<any>({
     defaultValues: {
@@ -175,7 +176,7 @@ const CreatePodcast = () => {
               )}
             />
 
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5" ref={voiceTypeRef}>
               <Label className="text-16 font-bold text-white-1">
                 Select AI Voice
               </Label>
@@ -301,14 +302,17 @@ const CreatePodcast = () => {
                   language={voiceType.includes("hi-IN") ? "hi-IN" : "en-US"}
                   audioExampleRef={audioExampleRef}
                   audioTestRef={audioTestRef}
+                  voiceTypeRef={voiceTypeRef}
                 />
               </TabsContent>
               <TabsContent value="password" className="mt-10">
                 <GenerateStories 
                   setAudio={setAudioUrl}
                   audio={audioUrl}
-                  voicePrompt={storyVoicePrompt}
                   setVoicePrompt={setStoryVoicePrompt}
+                  audioExampleRef={audioExampleRef}
+                  audioTestRef={audioTestRef}
+                  voiceTypeRef={voiceTypeRef}
                 />
               </TabsContent>
             </Tabs>

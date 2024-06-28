@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { Loader } from 'lucide-react'
 import { SynthesizeSpeech } from '@/lib/actions/audioGeneration.action'
 
-const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language, audioExampleRef}: GeneratePodcastProps) => {
+const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language, audioExampleRef, voiceTypeRef}: any) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePodcast = async () => {
@@ -61,10 +61,14 @@ const useGeneratePodcast = ({ setAudio, voiceType, voicePrompt, language, audioE
   return { isGenerating, generatePodcast, savePodcast };
 };
 
-const GeneratePodcast = (props: GeneratePodcastProps) => {
+const GeneratePodcast = (props: any) => {
   const { isGenerating, generatePodcast, savePodcast } = useGeneratePodcast(props);
   const [characterCount, setCharacterCount] = useState(props.voicePrompt ? props.voicePrompt.length : 0);
   const isJourneyVoice = false;
+
+  useEffect(()=>{
+    props.voiceTypeRef.current.style.display="block"
+  }, [])
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;

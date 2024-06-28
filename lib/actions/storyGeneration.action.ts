@@ -54,64 +54,41 @@ interface SynthesizeSpeechResult {
     outputFilename: string;
 }
 
-export async function SynthesizeSpeech({ text, voiceType, language, save }: SynthesizeSpeechParams): Promise<SynthesizeSpeechResult> {
-
-    const voice: protos.google.cloud.texttospeech.v1.IVoiceSelectionParams = {
-        languageCode: language,
-        name: voiceType
-    };
-
+export async function SynthesizeStorySpeech({ dialouges }: any): Promise<any> {
     const audioConfig: protos.google.cloud.texttospeech.v1.IAudioConfig = {
         audioEncoding: protos.google.cloud.texttospeech.v1.AudioEncoding.MP3
     };
 
     try {
         const bucket = storage.bucket(bucketName);
+        const audioBuffers: Buffer[] = [];
 
-        if (voiceType.includes("Journey") && text.length > 1000) {
-            const textChunks = text.match(/.{1,1000}/g) || [];
-            console.log(textChunks);
-            const audioBuffers: Buffer[] = [];
-
-            for (let i = 0; i < textChunks.length; i++) {
-                const chunkInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text: textChunks[i] };
-                const [response] = await client.synthesizeSpeech({
-                    input: chunkInput,
-                    voice,
-                    audioConfig
-                });
-
-                if (!response.audioContent) {
-                    throw new Error('Failed to synthesize speech for chunk');
-                }
-
-                audioBuffers.push(response.audioContent as Buffer);
-            }
-
-            // Concatenate audio buffers
-            const concatenatedAudioBuffer = concatenateBuffers(audioBuffers);
-
-            const outputFilename = `audio-${Date.now()}.mp3`;
-            const outputUrl = await uploadAndMakePublic(bucket, outputFilename, concatenatedAudioBuffer);
-
-            return { publicUrl: outputUrl, outputFilename };
-        } else {
-            const synthesisInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text };
+        for (let i = 0; i < dialouges.length; i++) {
+            const voice: protos.google.cloud.texttospeech.v1.IVoiceSelectionParams = {
+                languageCode: "en-US",
+                name: dialouges[i].voiceType
+            };
+            const chunkInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text: dialouges[i].speech };
             const [response] = await client.synthesizeSpeech({
-                input: synthesisInput,
+                input: chunkInput,
                 voice,
                 audioConfig
             });
 
             if (!response.audioContent) {
-                throw new Error('Failed to synthesize speech.');
+                throw new Error('Failed to synthesize speech for chunk');
             }
 
-            const outputFilename = `audio-${Date.now()}.mp3`;
-            const publicUrl = await uploadAndMakePublic(bucket, outputFilename, response.audioContent as Buffer);
-
-            return { publicUrl, outputFilename };
+            audioBuffers.push(response.audioContent as Buffer);
         }
+
+        // Concatenate audio buffers
+        const concatenatedAudioBuffer = concatenateBuffers(audioBuffers);
+
+        const outputFilename = `audio-${Date.now()}.mp3`;
+        const outputUrl = await uploadAndMakePublic(bucket, outputFilename, concatenatedAudioBuffer);
+
+        return { publicUrl: outputUrl, outputFilename };
     } catch (error) {
         console.error('Error synthesizing or saving speech:', error);
         throw new Error('Failed to synthesize or save speech');
