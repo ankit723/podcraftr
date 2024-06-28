@@ -8,15 +8,17 @@ const PodcastSchema = new mongoose.Schema({
     audioUrl: { type: String, required: true },
     audioDuration: { type: Number, required: true },
     imageUrl: { type: String, required: true },
-    voiceType: { type: String, required: true },
-    voicePrompt: { type: String, required: true },
+    voiceType: { type: String },
+    voicePrompt: { type: String },
+    storyPrompt: { type: [] },
     views: { type: Number, required: true },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
     authorId:{type:String, required:true},
-    type:{type:String, required:true, default:"public"}
+    type:{type:String, required:true, default:"public"},
+    isStory:{type:Boolean,required:true, default:false}
 });
 
 const Podcast = mongoose.models.Podcast || mongoose.model('Podcast', PodcastSchema);

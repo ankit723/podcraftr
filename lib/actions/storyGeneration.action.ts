@@ -65,7 +65,7 @@ export async function SynthesizeStorySpeech({ dialouges }: any): Promise<any> {
 
         for (let i = 0; i < dialouges.length; i++) {
             const voice: protos.google.cloud.texttospeech.v1.IVoiceSelectionParams = {
-                languageCode: "en-US",
+                languageCode:dialouges[i].voiceType.includes("hi-IN") ? "hi-IN" : "en-US",
                 name: dialouges[i].voiceType
             };
             const chunkInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text: dialouges[i].speech };

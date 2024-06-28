@@ -26,7 +26,7 @@ import GenerateStories from "@/components/cards/generateStories";
 import GenerateThumbnail from "@/components/cards/generateThumbnail";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createPodcast } from "@/lib/actions/podcast.action";
+import { createPodcast, createStory } from "@/lib/actions/podcast.action";
 import { useUser } from "@clerk/nextjs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -64,6 +64,7 @@ const CreatePodcast = () => {
   const [voicePrompt, setVoicePrompt] = useState("");
   const [storyVoicePrompt, setStoryVoicePrompt] = useState<any>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isStory, setIsStory]=useState(false)
   const audioExampleRef = useRef<any>(null);
   const audioTestRef = useRef<any>(null);
   const voiceTypeRef = useRef<any>(null);
@@ -120,17 +121,31 @@ const CreatePodcast = () => {
     try {
       setIsSubmitting(true);
 
-      const podcast = await createPodcast({
-        podcastTitle: data.podcastTitle,
-        podcastDescription: data.podcastDescription,
-        podcastCategory: data.podcastCategory,
-        audioUrl: data.audioUrl,
-        audioDuration: data.audioDuration,
-        imageUrl: data.imageUrl,
-        voiceType: data.voiceType,
-        voicePrompt: data.voicePrompt,
-        views: 0,
-      });
+      if(!isStory){
+        const podcast = await createPodcast({
+          podcastTitle: data.podcastTitle,
+          podcastDescription: data.podcastDescription,
+          podcastCategory: data.podcastCategory,
+          audioUrl: data.audioUrl,
+          audioDuration: data.audioDuration,
+          imageUrl: data.imageUrl,
+          voiceType: data.voiceType,
+          voicePrompt: data.voicePrompt,
+          views: 0,
+        });
+      }else{
+        const story = await createStory({
+          podcastTitle: data.podcastTitle,
+          podcastDescription: data.podcastDescription,
+          podcastCategory: data.podcastCategory,
+          audioUrl: data.audioUrl,
+          audioDuration: data.audioDuration,
+          imageUrl: data.imageUrl,
+          voicePrompt: data.voicePrompt,
+          views: 0,
+          isStory
+        });
+      }
 
       // alert({ title: 'Podcast created' });
       setIsSubmitting(false);
@@ -303,6 +318,7 @@ const CreatePodcast = () => {
                   audioExampleRef={audioExampleRef}
                   audioTestRef={audioTestRef}
                   voiceTypeRef={voiceTypeRef}
+                  setIsStory={setIsStory}
                 />
               </TabsContent>
               <TabsContent value="password" className="mt-10">
@@ -313,6 +329,7 @@ const CreatePodcast = () => {
                   audioExampleRef={audioExampleRef}
                   audioTestRef={audioTestRef}
                   voiceTypeRef={voiceTypeRef}
+                  setIsStory={setIsStory}
                 />
               </TabsContent>
             </Tabs>

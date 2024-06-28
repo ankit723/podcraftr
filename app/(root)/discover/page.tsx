@@ -12,7 +12,7 @@ const Discover = async({ searchParams: { search} }: { searchParams : { search: s
         podcastTitle.toLowerCase().includes(search) ||
         podcastDescription.toLowerCase().includes(search) ||
         podcastCategory.toLowerCase().includes(search) ||
-        voiceType.toLowerCase().includes(search) ||
+        voiceType?.toLowerCase().includes(search) ||
         (author.name).toLowerCase().includes(search) ||
         (author.username).toLowerCase().includes(search)
     );

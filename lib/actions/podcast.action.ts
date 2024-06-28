@@ -6,7 +6,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import Podcast from "../models/podcast.model";
 import { redirect } from "next/navigation";
 
-export async function createPodcast({podcastTitle, podcastDescription, podcastCategory, audioUrl, audioDuration, imageUrl, voiceType, voicePrompt, views, type}:any){
+export async function createPodcast({podcastTitle, podcastDescription, podcastCategory, audioUrl, audioDuration, imageUrl, voiceType, voicePrompt, views, type, isStory}:any){
     try{
         connectToDB()
         const cUser = await currentUser()
@@ -36,7 +36,56 @@ export async function createPodcast({podcastTitle, podcastDescription, podcastCa
             voicePrompt,
             views,
             author:user._id,
-            authorId:cUser?.id
+            authorId:cUser?.id,
+            isStory:isStory===true?true:false
+        });
+
+        const createdPodcast = await newPodcast.save();
+
+        await User.findOneAndUpdate({id:cUser?.id}, {
+            $push: { podcasts: createdPodcast._id },
+        });
+
+        console.log("Created Podcast Object:", createdPodcast);
+
+        redirect("/discover")
+    }catch(error:any){
+        console.error("Error creating podcast:", error);
+        throw error;
+    }
+}
+
+export async function createStory({podcastTitle, podcastDescription, podcastCategory, audioUrl, audioDuration, imageUrl, storyPrompt, views, type, isStory}:any){
+    try{
+        connectToDB()
+        const cUser = await currentUser()
+        const user = await User.findOne({id:cUser?.id})
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 6; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        const newPodcast = new Podcast({
+            id: `pod_${user.id}_${result}`,
+            type:type==='personal'?'personal':'public',
+            podcastTitle,
+            podcastDescription,
+            podcastCategory,
+            audioUrl,
+            audioDuration,
+            imageUrl,
+            storyPrompt,
+            views,
+            author:user._id,
+            authorId:cUser?.id,
+            isStory
         });
 
         const createdPodcast = await newPodcast.save();

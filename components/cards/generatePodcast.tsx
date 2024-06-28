@@ -68,6 +68,7 @@ const GeneratePodcast = (props: any) => {
 
   useEffect(()=>{
     props.voiceTypeRef.current.style.display="block"
+    props.setIsStory(false)
   }, [])
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
