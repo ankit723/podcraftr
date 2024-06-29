@@ -30,12 +30,10 @@ const GenerateStories = ({ setAudio, audio, setVoicePrompt, audioTestRef, voiceT
     const newLines = [...lines];
     newLines[index][field] = value;
     setLines(newLines);
-    console.log("Updated lines state: ", newLines);
   };
 
   const addLine=async()=>{
     setLines([...lines, { characterName: "", voiceType: "", speech: "", speechAudio:null }]);
-    console.log("Added new line: ", lines);
   };
 
   const saveSpeech=async(index:number, speech:string, voiceType:string)=>{
@@ -55,7 +53,6 @@ const GenerateStories = ({ setAudio, audio, setVoicePrompt, audioTestRef, voiceT
       audioExampleRef?.current.pause()
     }
     setIsGenerating(true)
-    console.log(lines)
     setAudio(null)
     try {
       const { publicUrl, outputFilename } = await SynthesizeStorySpeech({dialouges:lines});

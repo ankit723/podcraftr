@@ -11,8 +11,6 @@ import { Button } from '../ui/button';
 const RightSideBarDetails = ({ podcasts, users, currentUser }:any) => {
   const {user}=useUser()
   const router =useRouter()
-
-  console.log(podcasts)
   return (
     <section className='right_sidebar'>
       <SignedIn>

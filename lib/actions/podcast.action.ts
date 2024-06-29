@@ -46,8 +46,6 @@ export async function createPodcast({podcastTitle, podcastDescription, podcastCa
             $push: { podcasts: createdPodcast._id },
         });
 
-        console.log("Created Podcast Object:", createdPodcast);
-
         redirect("/discover")
     }catch(error:any){
         console.error("Error creating podcast:", error);
@@ -93,8 +91,6 @@ export async function createStory({podcastTitle, podcastDescription, podcastCate
         await User.findOneAndUpdate({id:cUser?.id}, {
             $push: { podcasts: createdPodcast._id },
         });
-
-        console.log("Created Podcast Object:", createdPodcast);
 
         redirect("/discover")
     }catch(error:any){

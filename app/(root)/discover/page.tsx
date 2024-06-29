@@ -6,7 +6,6 @@ import { fetchPodcasts } from '@/lib/actions/podcast.action'
 
 const Discover = async({ searchParams: { search} }: { searchParams : { search: string }}) => {
   const podcastsData = await fetchPodcasts()
-  console.log(search)
   const searchedPodcast = podcastsData.filter(({ podcastTitle, podcastDescription, podcastCategory, voiceType, author }) => {
     return (
         podcastTitle.toLowerCase().includes(search) ||

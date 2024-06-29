@@ -58,7 +58,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 const imgRes = await UploadImage(formData);
     
                 if (imgRes && imgRes.fileUrl) {
-                    console.log(imgRes.fileUrl)
                     values.profile_photo = imgRes.fileUrl;
                 }
             } catch (error) {
@@ -66,7 +65,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 return;
             }
         }
-        console.log(values)
         
         await updateUser({
             name: values.name,

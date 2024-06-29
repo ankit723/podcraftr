@@ -70,7 +70,6 @@ export async function SynthesizeSpeech({ text, voiceType, language, save }: Synt
 
         if (voiceType.includes("Journey") && text.length > 1000) {
             const textChunks = text.match(/.{1,1000}/g) || [];
-            console.log(textChunks);
             const audioBuffers: Buffer[] = [];
 
             for (let i = 0; i < textChunks.length; i++) {
