@@ -5,6 +5,7 @@ import EmptyState from '@/components/shared/emptyState'
 import Image from 'next/image'
 import React from 'react'
 import { currentUser } from '@clerk/nextjs/server'
+import StoryCard from '@/components/cards/storyCard'
 
 const PodcastDetails = async({params}:{params:{podcastId:string}}) => {
   const cUser= await currentUser()
@@ -39,7 +40,7 @@ const PodcastDetails = async({params}:{params:{podcastId:string}}) => {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
           <h1 className="text-18 font-bold text-white-1">Transcription</h1>
-          <p className="text-16 font-medium text-white-2">{!(podcast?.isStory)?podcast?.voicePrompt:"It is a Story Card"}</p>
+          <p className="text-16 font-medium text-white-2">{!(podcast?.isStory)?podcast?.voicePrompt:<StoryCard storyPrompt={podcast?.storyPrompt} />}</p>
         </div>
       </div>
 

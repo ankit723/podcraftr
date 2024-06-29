@@ -141,7 +141,7 @@ const CreatePodcast = () => {
           audioUrl: data.audioUrl,
           audioDuration: data.audioDuration,
           imageUrl: data.imageUrl,
-          voicePrompt: data.voicePrompt,
+          storyPrompt: storyVoicePrompt,
           views: 0,
           isStory
         });
