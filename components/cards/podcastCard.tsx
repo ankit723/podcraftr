@@ -3,12 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-const PodcastCard = ({imgUrl, title, description, podcastId}:{
-    imgUrl:string,
-    title:string,
-    description:string,
-    podcastId:number
-}) => {
+const PodcastCard = ({imgUrl, title, description, podcastId}:any) => {
   const router=useRouter()
 
   const handleViews=()=>{
