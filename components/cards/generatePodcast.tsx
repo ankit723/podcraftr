@@ -66,10 +66,10 @@ const GeneratePodcast = (props: any) => {
   const [characterCount, setCharacterCount] = useState(props.voicePrompt ? props.voicePrompt.length : 0);
   const isJourneyVoice = false;
 
-  useEffect(()=>{
-    props.voiceTypeRef.current.style.display="block"
-    props.setIsStory(false)
-  }, [])
+  // useEffect(()=>{
+  //   props.voiceTypeRef.current.style.display="block"
+  //   props.setIsStory(false)
+  // }, [])
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
