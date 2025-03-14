@@ -13,7 +13,7 @@ const client = new textToSpeech.TextToSpeechClient({ credentials: speechCredenti
 // Define your Google Cloud Storage bucket name
 const bucketName = 'podcraftr-profile-image-bucket';
 
-async function uploadAndMakePublic(bucket: any, filename: string, audioContent: Buffer) {
+async function uploadAndMakePublic(bucket: Storage.Bucket, filename: string, audioContent: Buffer): Promise<string> {
     const file = bucket.file(filename);
     await file.save(audioContent, {
         metadata: {
@@ -42,19 +42,21 @@ function concatenateBuffers(buffers: Buffer[]): Buffer {
     return resultBuffer;
 }
 
-interface SynthesizeSpeechParams {
-    text: string;
+interface Dialogue {
     voiceType: string;
-    language: string;
-    save: boolean;
+    speech: string;
 }
 
-interface SynthesizeSpeechResult {
+interface SynthesizeStorySpeechParams {
+    dialouges: Dialogue[];
+}
+
+interface SynthesizeStorySpeechResult {
     publicUrl: string;
     outputFilename: string;
 }
 
-export async function SynthesizeStorySpeech({ dialouges }: any): Promise<any> {
+export async function SynthesizeStorySpeech({ dialouges }: SynthesizeStorySpeechParams): Promise<SynthesizeStorySpeechResult> {
     const audioConfig: protos.google.cloud.texttospeech.v1.IAudioConfig = {
         audioEncoding: protos.google.cloud.texttospeech.v1.AudioEncoding.MP3
     };
@@ -65,7 +67,7 @@ export async function SynthesizeStorySpeech({ dialouges }: any): Promise<any> {
 
         for (let i = 0; i < dialouges.length; i++) {
             const voice: protos.google.cloud.texttospeech.v1.IVoiceSelectionParams = {
-                languageCode:dialouges[i].voiceType.includes("hi-IN") ? "hi-IN" : "en-US",
+                languageCode: dialouges[i].voiceType.includes("hi-IN") ? "hi-IN" : "en-US",
                 name: dialouges[i].voiceType
             };
             const chunkInput: protos.google.cloud.texttospeech.v1.ISynthesisInput = { text: dialouges[i].speech };

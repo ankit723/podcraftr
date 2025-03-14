@@ -55,9 +55,9 @@ export interface GeneratePodcastProps {
   voicePrompt: string;
   setVoicePrompt: Dispatch<SetStateAction<string>>;
   setAudioDuration: Dispatch<SetStateAction<number>>;
-  language:string;
-  audioExampleRef:any
-  audioTestRef:any
+  language: string;
+  audioExampleRef: React.RefObject<HTMLAudioElement>;
+  audioTestRef: React.RefObject<HTMLAudioElement>;
 }
 
 export interface GenerateThumbnailProps {

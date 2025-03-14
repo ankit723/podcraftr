@@ -2,8 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { formatTime } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { formatTime, cn } from "@/lib/utils";
 import { useAudio } from "@/providers/audioProvider";
 import { Progress } from "../ui/progress";
 
@@ -15,6 +14,7 @@ const PodcastPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const { audio } = useAudio();
 
+  // Toggle play/pause state
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
       audioRef.current?.play();
@@ -25,6 +25,7 @@ const PodcastPlayer = () => {
     }
   };
 
+  // Toggle mute/unmute state
   const toggleMute = () => {
     if (audioRef.current) {
       audioRef.current.muted = !isMuted;
@@ -32,6 +33,7 @@ const PodcastPlayer = () => {
     }
   };
 
+  // Forward 5 seconds
   const forward = () => {
     if (
       audioRef.current &&
@@ -43,6 +45,7 @@ const PodcastPlayer = () => {
     }
   };
 
+  // Rewind 5 seconds
   const rewind = () => {
     if (audioRef.current && audioRef.current.currentTime - 5 > 0) {
       audioRef.current.currentTime -= 5;
@@ -51,6 +54,7 @@ const PodcastPlayer = () => {
     }
   };
 
+  // Update current time for progress tracking
   useEffect(() => {
     const updateCurrentTime = () => {
       if (audioRef.current) {
@@ -68,36 +72,45 @@ const PodcastPlayer = () => {
     }
   }, []);
 
+  // Handle audio source changes
   useEffect(() => {
     const audioElement = audioRef.current;
     if (audio?.audioUrl) {
       if (audioElement) {
-        audioElement.play().then(() => {
-          setIsPlaying(true);
-        });
+        audioElement.play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+            setIsPlaying(false);
+          });
       }
     } else {
       audioElement?.pause();
-      setIsPlaying(true);
+      setIsPlaying(false);
     }
   }, [audio]);
+
+  // Set duration when metadata is loaded
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
     }
   };
 
+  // Handle audio end
   const handleAudioEnded = () => {
     setIsPlaying(false);
   };
 
+  // Don't render if no audio URL is available
+  if (!audio?.audioUrl || audio.audioUrl === "") {
+    return null;
+  }
+
   return (
-    <div
-      className={cn("sticky bottom-0 left-0 flex size-full flex-col", {
-        hidden: !audio?.audioUrl || audio?.audioUrl === "",
-      })}
-    >
-      {/* change the color for indicator inside the Progress component in ui folder */}
+    <div className="sticky bottom-0 left-0 flex size-full flex-col">
       <Progress
         value={(currentTime / duration) * 100}
         className="w-full"
@@ -106,34 +119,34 @@ const PodcastPlayer = () => {
       <section className="glassmorphism-black flex h-[112px] w-full items-center justify-between px-4 max-md:justify-center max-md:gap-5 md:px-12">
         <audio
           ref={audioRef}
-          src={audio?.audioUrl}
+          src={audio.audioUrl}
           className="hidden"
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={handleAudioEnded}
         />
         
         <div className="flex items-center gap-4 max-md:hidden">
-          <Link href={`/podcast/${audio?.podcastId}`}>
+          <Link href={`/podcast/${audio.podcastId}`}>
             <Image
-              src={audio?.imageUrl! || "/images/player1.png"}
+              src={audio.imageUrl || "/images/player1.png"}
               width={64}
               height={64}
-              alt="player1"
+              alt="podcast thumbnail"
               className="aspect-square rounded-xl"
             />
           </Link>
           <div className="flex w-[160px] flex-col">
             <h2 className="text-14 truncate font-semibold text-white-1">
-              {audio?.title}
+              {audio.title}
             </h2>
-            <p className="text-12 font-normal text-white-2">{audio?.author}</p>
+            <p className="text-12 font-normal text-white-2">{audio.author}</p>
           </div>
         </div>
 
         <div className="flex-center cursor-pointer gap-3 md:gap-6">
           <div className="flex items-center gap-1.5">
             <Image
-              src={"/icons/reverse.svg"}
+              src="/icons/reverse.svg"
               width={24}
               height={24}
               alt="rewind"
@@ -145,13 +158,13 @@ const PodcastPlayer = () => {
             src={isPlaying ? "/icons/Pause.svg" : "/icons/Play.svg"}
             width={30}
             height={30}
-            alt="play"
+            alt={isPlaying ? "pause" : "play"}
             onClick={togglePlayPause}
           />
           <div className="flex items-center gap-1.5">
             <h2 className="text-12 font-bold text-white-4">+5</h2>
             <Image
-              src={"/icons/forward.svg"}
+              src="/icons/forward.svg"
               width={24}
               height={24}
               alt="forward"
@@ -169,7 +182,7 @@ const PodcastPlayer = () => {
               src={isMuted ? "/icons/unmute.svg" : "/icons/mute.svg"}
               width={24}
               height={24}
-              alt="mute unmute"
+              alt={isMuted ? "unmute" : "mute"}
               onClick={toggleMute}
               className="cursor-pointer"
             />

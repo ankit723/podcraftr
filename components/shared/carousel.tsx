@@ -48,7 +48,6 @@ const EmblaCarousel = ({ fansLikeDetail }: any) => {
             />
             <div className="glassmorphism-black relative z-10 flex flex-col rounded-b-xl p-4">
               <h2 className="text-14 font-semibold text-white-1">{item._doc.podcastTitle}</h2>
-              <p className="text-12 font-normal text-white-2">{item._doc.author.name}</p>
             </div>
           </figure>
         ))}

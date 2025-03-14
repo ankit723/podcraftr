@@ -1,20 +1,27 @@
 import React, { useRef, useState } from 'react';
-import { Button } from '../ui/button';
-import { cn } from '@/lib/utils';
 import { Input } from '../ui/input';
 import Image from 'next/image';
 import { Loader } from 'lucide-react';
 import { UploadImage } from '@/lib/actions/profileAccount.action';
 import { GenerateThumbnailProps } from '@/types';
 
+/**
+ * Component for uploading and displaying podcast thumbnail images
+ */
 const GenerateThumbnail = ({ setImage, image }: GenerateThumbnailProps) => {
   const [isAiThumbnail, setIsAiThumbnail] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const imageRef = useRef<HTMLInputElement>(null);
 
+  /**
+   * Handles the image upload process
+   * @param file - The file to upload
+   */
   const handleImageUpload = async (file: File) => {
     setIsImageLoading(true);
     setImage('');
+    setError(null);
 
     try {
       const formData = new FormData();
@@ -23,22 +30,29 @@ const GenerateThumbnail = ({ setImage, image }: GenerateThumbnailProps) => {
       const imgRes = await UploadImage(formData);
       if (imgRes && imgRes.fileUrl) {
         setImage(imgRes.fileUrl);
-        setIsImageLoading(false);
+      } else {
+        setError('Failed to upload image: No URL returned');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image');
+      setError('Failed to upload image. Please try again.');
+    } finally {
       setIsImageLoading(false);
     }
   };
 
+  /**
+   * Handles the file input change event
+   * @param e - The change event
+   */
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    setError(null);
 
     try {
       const files = e.target.files;
       if (!files || files.length === 0) {
-        alert('Please select a file to upload');
+        setError('Please select a file to upload');
         return;
       }
 
@@ -46,14 +60,13 @@ const GenerateThumbnail = ({ setImage, image }: GenerateThumbnailProps) => {
       handleImageUpload(file);
     } catch (error) {
       console.error('Error handling image upload:', error);
-      alert('Error uploading image');
+      setError('Error uploading image. Please try again.');
     }
   };
 
   return (
     <>
       <div className="image_div" onClick={() => imageRef?.current?.click()}>
-        
         <Input
           type="file"
           className="hidden"
@@ -75,6 +88,10 @@ const GenerateThumbnail = ({ setImage, image }: GenerateThumbnailProps) => {
           <p className="text-12 font-normal text-gray-1">SVG, PNG, JPG, or GIF (max. 1080x1080px)</p>
         </div>
       </div>
+
+      {error && (
+        <p className="mt-2 text-center text-sm text-red-500">{error}</p>
+      )}
 
       {image && (
         <div className="flex-center w-full">
